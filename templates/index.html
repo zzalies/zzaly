@@ -3,8 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>index</title>
+
 </head>
 <body>
+    {% for zzal in zzal_list %}
+        <ul>
+        <li>{{ zzal.url }}</li>
+        <li>{{ zzal.creator }}</li>
+        <img src="{{ zzal.url }}">
+        </ul>
+    {% endfor %}
 
+    <div>
+        <a href="mypage">button</a>
+
+    </div>
 </body>
 </html>
