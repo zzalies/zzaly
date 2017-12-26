@@ -40,42 +40,18 @@
     
 
     <div class="card-deck">
+        {% for zzal in zzal_list %}
         <div class="card text-white bg-dark mb-3" style="max-width: 35rem;">
             <div class="card-body">
                 <h4 class="card-title">Title</h4>
                 <p class="card-text">Create At:</p>
-                <p class="card-text">Create by:</p>
-                <p class="card-text">View:</p>
+                <p class="card-text">Create by: {{ zzal.creator }}</p>
+                <p class="card-text">View: 10</p>
+                <img src="{{ zzal.url }}">
             </div>
             <a class="btn btn-danger" href="#" role="button">More</a>
         </div>
-        <div class="card text-white bg-dark mb-3" style="max-width: 35rem;">
-            <div class="card-body">
-                <h4 class="card-title">Title</h4>
-                <p class="card-text">Create At:</p>
-                <p class="card-text">Create by:</p>
-                <p class="card-text">View:</p>
-            </div>
-            <a class="btn btn-danger" href="#" role="button">More</a>
-        </div>
-        <div class="card text-white bg-dark mb-3" style="max-width: 35rem;">
-            <div class="card-body">
-                <h4 class="card-title">Title</h4>
-                <p class="card-text">Create At:</p>
-                <p class="card-text">Create by:</p>
-                <p class="card-text">View:</p>
-            </div>
-            <a class="btn btn-danger" href="#" role="button">More</a>
-        </div>
-        <div class="card text-white bg-dark mb-3" style="max-width: 35rem;">
-            <div class="card-body">
-                <h4 class="card-title">Title</h4>
-                <p class="card-text">Create At:</p>
-                <p class="card-text">Create by:</p>
-                <p class="card-text">View:</p>
-            </div>
-            <a class="btn btn-danger" href="#" role="button">More</a>
-        </div>
+        {% endfor %}
     </div>
 
     <!-- Optional JavaScript -->
