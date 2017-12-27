@@ -3,6 +3,8 @@ from flask import render_template, request
 import os
 from werkzeug.utils import secure_filename
 
+server_host = 'http://10.100.103.165:8080'
+
 class zzal:
     '''
     creator = "me"
@@ -21,9 +23,9 @@ class zzal:
         self.set(creator, url, tag)
 
 def get_zzal_list():
-    return [zzal("me", "http://localhost:8080/static/upload_image/sana.gif", "twice"),
-            zzal("me", "http://localhost:8080/static/upload_image/twice.gif", "twice"),
-            zzal("me", "http://localhost:8080/static/upload_image/irene.gif", "red velvet")]
+    return [zzal("me", server_host + "/static/upload_image/sana.gif", "twice"),
+            zzal("me", server_host + "/static/upload_image/twice.gif", "twice"),
+            zzal("me", server_host + "/static/upload_image/irene.gif", "red velvet")]
 
 
 def index():
@@ -55,11 +57,25 @@ def my_page_zzal_upload_get():
 
 
 def index_search():
-    return "search"
+    key = request.args.get('key')
+    return key
 
 
-def zzal_make():
+def zzal_make_get():
     return render_template("make.html")
+
+
+def zzal_make_post():
+    file_cnt = request.form.get('file_cnt')
+
+    for i in range(file_cnt):
+        file_name = 'sys_' + str(i)
+        f = request.files[file_name]
+        is_file = request.form.get('is_file')
+
+        return 'success'
+    else:
+        return 'fail'
 
 
 def page_not_found():
