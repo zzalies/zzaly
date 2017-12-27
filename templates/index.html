@@ -11,6 +11,16 @@
   </head>
   <body>
         {% include 'header.html'%}
+        <div class="card-body">
+            <h4 class="card-title">Text</h4>
+            <div class="input-group input-group-lg">
+                <textarea type="text" class="form-control" placeholder="Please type text" aria-label="Body" aria-describedby="sizing-addon1" rows="5"></textarea>
+                <span class="input-group-btn">
+                    <button class="btn btn-dark" type="submit">Create</button>
+                </span>
+            </div>
+        </div>
+
 
     <div class="card-deck">
         {% for zzal in zzal_list %}
