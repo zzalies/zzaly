@@ -5,18 +5,33 @@ import redis
 import json
 from werkzeug.utils import secure_filename
 
+db = redis.Redis('localhost') #connect to server
 
 class zzal:
+    '''
     creator = "me"
     url = "https://media.giphy.com/media/l0MYyDa8S9ghzNebm/giphy.gif"
     tag = "twice"
+    '''
+    def set(self, creator, url, tag):
+        self.creator = creator
+        self.url = url
+        self.tag = tag
 
+    def __init__(self):
+        pass
 
-zzal_list = [zzal, zzal, zzal]
-db = redis.Redis('localhost')  # connect to server
+    def __init__(self, creator, url, tag):
+        self.set(creator, url, tag)
+
+def get_zzal_list():
+    return [zzal("me", "http://localhost:8080/static/upload_image/sana.gif", "twice"),
+            zzal("me", "http://localhost:8080/static/upload_image/twice.gif", "twice"),
+            zzal("me", "http://localhost:8080/static/upload_image/irene.gif", "red velvet")]
+
 
 def index():
-    return render_template("index.html", zzal_list = zzal_list)
+    return render_template("index.html", zzal_list = get_zzal_list())
 
 
 def my_page():
@@ -29,7 +44,15 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 def my_page_zzal_upload_post(upload_folder):
+
     f = request.files['file']
+    title = request.form['title']
+    tag = request.form['tag']
+    desc = request.form['description']
+    zzal(title, tag, desc)
+
+    json.dumps()
+
 
     if f and allowed_file(f.filename):
         filename = secure_filename(f.filename)
