@@ -23,14 +23,19 @@ def my_page():
     return router.my_page()
 
 
-@app.route('/index/search')
-def search():
-    return router.index_search()
+# @app.route('/index/search')
+# def search():
+#     return router.index_search()
 
 
 @app.route('/mypage/zzal/upload')
 def zzal_upload():
     return router.my_page_zzal_upload()
+
+
+@app.route('/mypage/zzal/make')
+def zzal_make():
+    return router.zzal_make()
 
 @app.errorhandler(404)
 def page_not_found(e):

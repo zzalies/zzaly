@@ -20,11 +20,18 @@ def my_page():
 
 
 def my_page_zzal_upload():
-    return "Zzal upload"
+    return render_template("upload.html")
 
 
 def index_search():
-    return "Zzal upload"
+    return "search"
+
+
+def zzal_make():
+    return render_template("make.html")
+
 
 def page_not_found():
     return render_template('404.html'), 404
+
+

@@ -11,22 +11,7 @@
   </head>
   <body>
       <div class="card">
-        <div class="card-header">
-          <ul class="nav nav-tabs card-header-tabs">
-            <li class="nav-item">
-              <a class="nav-link" href="index.html">Create</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="upload.html">Upload</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="make.html">Make</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="list.html">List</a>
-            </li>
-          </ul>
-        </div>
+          {% include 'header.html'%}
         <div class="card-body">
           <h4 class="card-title">File upload (GIF)</h4>
           <input type="file" class="form-control-file" id="formfile1">
