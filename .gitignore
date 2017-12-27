@@ -1,2 +1,4 @@
-.idea
 controller/__pycache__/router.cpython-36.pyc
+controller/__pycache__/__init__.cpython-36.pyc
+venv/*
+.idea/*
