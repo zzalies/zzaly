@@ -1,7 +1,10 @@
 
 from flask import render_template, request
 import os
+import redis
+import json
 from werkzeug.utils import secure_filename
+
 
 class zzal:
     creator = "me"
@@ -10,7 +13,7 @@ class zzal:
 
 
 zzal_list = [zzal, zzal, zzal]
-
+db = redis.Redis('localhost')  # connect to server
 
 def index():
     return render_template("index.html", zzal_list = zzal_list)
@@ -31,6 +34,7 @@ def my_page_zzal_upload_post(upload_folder):
     if f and allowed_file(f.filename):
         filename = secure_filename(f.filename)
         f.save(os.path.join(upload_folder, filename))
+
         return 'success'
     else:
         return 'fail'

@@ -2,13 +2,14 @@ from flask import Flask, render_template, request, redirect, url_for
 from controller import router
 
 
-### page ##
 
+
+
+### page ##
 app = Flask(__name__)
 UPLOAD_FOLDER = './static/upload_image'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-temp = "dddd"
 
 @app.route('/')
 def root():
@@ -33,6 +34,7 @@ def my_page():
 @app.route('/mypage/zzal/upload',  methods=['GET', 'POST'])
 def zzal_upload():
     if request.method == 'POST':
+
         return router.my_page_zzal_upload_post(UPLOAD_FOLDER)
 
     return router.my_page_zzal_upload_get()
