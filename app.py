@@ -1,10 +1,12 @@
-from flask import Flask
+from flask import Flask, render_template, request, redirect, url_for
 from controller import router
 
 
 ### page ##
 
 app = Flask(__name__)
+UPLOAD_FOLDER = './static/upload_image'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 temp = "dddd"
 
@@ -28,9 +30,13 @@ def search():
     return router.index_search()
 
 
-@app.route('/mypage/zzal/upload')
+@app.route('/mypage/zzal/upload',  methods=['GET', 'POST'])
 def zzal_upload():
-    return router.my_page_zzal_upload()
+    if request.method == 'POST':
+        return router.my_page_zzal_upload(UPLOAD_FOLDER)
+
+    return page_not_found
+
 
 @app.errorhandler(404)
 def page_not_found(e):

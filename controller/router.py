@@ -1,6 +1,7 @@
 
-from flask import render_template
-
+from flask import render_template, request
+import os
+from werkzeug.utils import secure_filename
 
 class zzal:
     creator = "me"
@@ -19,7 +20,21 @@ def my_page():
     return render_template("mypage.html")
 
 
-def my_page_zzal_upload():
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+def my_page_zzal_upload(upload_folder):
+    f = request.files['file']
+
+    if f and allowed_file(f.filename):
+        filename = secure_filename(f.filename)
+        f.save(os.path.join(upload_folder, filename))
+        return 'success'
+    else:
+        return 'fail'
+
     return "Zzal upload"
 
 

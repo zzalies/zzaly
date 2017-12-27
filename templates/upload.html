@@ -28,9 +28,11 @@
           </ul>
         </div>
         <div class="card-body">
-          <h4 class="card-title">File upload (GIF)</h4>
-          <input type="file" class="form-control-file" id="formfile1">
-          <a href="C:/Users/User/Desktop/jbcha/index.html" class="btn btn-dark" type="submit">Upload</a>
+          <form action="/mypage/zzal/upload" method="POST" enctype = "multipart/form-data">
+            <h4 class="card-title">File upload (GIF)</h4>
+            <input type="file" name="file" class="form-control-file" id="formfile1">
+            <input class="btn btn-dark" type="submit" value="UPLOAD"></input>
+          </form>
         </div>
       </div>
     
