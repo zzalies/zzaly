@@ -1,7 +1,7 @@
 
 from flask import render_template, request
 import os
-import redis
+
 import json
 from werkzeug.utils import secure_filename
 
