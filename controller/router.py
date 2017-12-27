@@ -4,16 +4,30 @@ import os
 from werkzeug.utils import secure_filename
 
 class zzal:
+    '''
     creator = "me"
     url = "https://media.giphy.com/media/l0MYyDa8S9ghzNebm/giphy.gif"
     tag = "twice"
+    '''
+    def set(self, creator, url, tag):
+        self.creator = creator
+        self.url = url
+        self.tag = tag
 
+    def __init__(self):
+        pass
 
-zzal_list = [zzal, zzal, zzal]
+    def __init__(self, creator, url, tag):
+        self.set(creator, url, tag)
+
+def get_zzal_list():
+    return [zzal("me", "http://localhost:8080/static/upload_image/sana.gif", "twice"),
+            zzal("me", "http://localhost:8080/static/upload_image/twice.gif", "twice"),
+            zzal("me", "http://localhost:8080/static/upload_image/irene.gif", "red velvet")]
 
 
 def index():
-    return render_template("index.html", zzal_list = zzal_list)
+    return render_template("index.html", zzal_list = get_zzal_list())
 
 
 def my_page():
