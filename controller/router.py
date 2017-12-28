@@ -1,5 +1,5 @@
 
-from flask import render_template, json
+from flask import render_template, json, request, redirect
 
 
 class zzal:
@@ -29,6 +29,7 @@ def index_search(user_name):
 
 
 def index_board():
-    f = request.files['upload_file']
-    f.save(os.path.join(file_path, file_name))
-    return render_template("")
+    body = request.form['body']
+    image = request.form['image']
+    print(image)
+    return redirect("/index")
