@@ -1,5 +1,5 @@
 
-from flask import render_template
+from flask import render_template, json
 
 
 class zzal:
@@ -12,7 +12,7 @@ zzal_list = [zzal, zzal, zzal]
 
 
 def index():
-    return render_template("index.html", zzal_list = zzal_list)
+    return render_template("index/index.html", zzal_list = zzal_list)
 
 
 def my_page():
@@ -23,5 +23,6 @@ def my_page_zzal_upload():
     return "Zzal upload"
 
 
-def index_search():
-    return "Zzal upload"
+def index_search(user_name):
+    json_data = { 'list': ['http://10.100.103.165:8080/static/upload_image/jeny.gif']}
+    return json.dumps(json_data)

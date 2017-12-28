@@ -23,9 +23,9 @@ def my_page():
     return router.my_page()
 
 
-@app.route('/index/search')
-def search():
-    return router.index_search()
+@app.route('/index/search/<user_name>')
+def search(user_name):
+    return router.index_search(user_name)
 
 
 @app.route('/mypage/zzal/upload')

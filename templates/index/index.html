@@ -139,13 +139,13 @@
             $.ajax({
                 type:"GET",
                 //url:"static/test.html",
-                url:"search/" + keyword,
+                url:"index/search/" + keyword,
                // data : {name : "홍길동"},
                 //dataType : "text",
                 success: function(data){
-                    var dict = {};
-                    JSON.parse(data,dict);
-                    ImageInsert(dict);
+                    alert(data);
+                    var dict = JSON.parse(data);
+                    ImageInsert(dict["list"]);
                 },
                 error: function(xhr, status, error) {
                     alert("error");
