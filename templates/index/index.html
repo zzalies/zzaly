@@ -91,10 +91,26 @@
     <script>
         // insert 버튼 입력시 로직
         $("#card-title-btn").click(function(e) {
-            //var title = document.getElementById("title-text-box").value;
-            document.getElementById("gif-list").innerHTML = "<img src=\"https://lumiere-a.akamaihd.net/v1/images/smile_-_pooh_b9b622d6.gif\">";
+            var title = document.getElementById("title-text-box").value;
+            console.log(title);
+            GetGIFList(title);
+            //var list = ["http://media3.giphy.com/media/kEKcOWl8RMLde/giphy.gif","https://tctechcrunch2011.files.wordpress.com/2015/08/safe_image.gif","https://media0.giphy.com/media/3o6ozxasMHDoJ2OP7i/giphy.gif"]
+            //ImageInsert(list)
         })
-        $("c")
+
+        function ImageInsert(url_array) {
+            var image_box = document.getElementById("gif-list");
+            var html_source = "";
+            for (var num in url_array) {
+                html_source += "<img src=\""+url_array[num]+"\" id=\""+url_array[num]+"\" onclick=\"ImageSelect(this)\">\n";
+            }
+            image_box.innerHTML = html_source;
+        }
+
+        function ImageSelect(id) {
+            document.getElementById("image-box").innerHTML += "<img src=\""+id.id+"\">";
+            document.getElementById("gif-list").innerHTML = "";
+        }
         // 텍스트 입력 박스에서 @gif 키워드 디텍션 로직
         var flag=false;
         var httpRequest;
@@ -127,7 +143,9 @@
                // data : {name : "홍길동"},
                 //dataType : "text",
                 success: function(data){
-                    alert(data)
+                    var dict = {};
+                    JSON.parse(data,dict);
+                    ImageInsert(dict);
                 },
                 error: function(xhr, status, error) {
                     alert("error");
