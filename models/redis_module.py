@@ -9,9 +9,14 @@ def make_connection():
     rds = redis.Redis(connection_pool=pool, max_connections=10)
     print("redis connection make ok")
 
-
 def get(key):
     return rds.get(key)
+
+def mget(keylist):
+    return rds.mget(keylist)
+
+def keys(pat):
+    return rds.keys(pat)
 
 
 def set(key, value):

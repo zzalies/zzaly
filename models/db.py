@@ -3,7 +3,6 @@ from models import redis_module as rds
 def init():
     rds.make_connection()
 
-
 # def reg_user():
 #     # 유저별 이미지 등록
 #     pass
@@ -43,3 +42,15 @@ def count_up(title):
 def like_up(title):
     rds.hincr(title,"like",1)
     return
+
+def reg_post(title, content):
+    rds.hset("post",title, content)
+    return
+
+def get_post():
+    return rds.hgetall("post")
+
+
+if __name__ == '__main__':
+    init()
+    print(get_post())

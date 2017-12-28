@@ -7,6 +7,7 @@ from models import db
 
 SERVER_HOST = 'http://10.100.103.165:8080'
 UPLOAD_FOLDER = 'static/upload_image'
+USER_ID = "lovely_zzaly"
 
 db.init()
 
@@ -32,16 +33,16 @@ db.init()
 #         db.count_up(self.title)
 #
 #
-def get_zzal_list():
-    return #zzal list
+def get_post_list():
+    return db.get_post()
 
 
 def index():
-    return render_template("index.html", zzal_list = get_zzal_list())
+    return render_template("index.html", zzal_list=get_post_list())
 
 
 def my_page():
-    return render_template("mypage.html")
+    return db.get_post_by_user(USER_ID)
 
 
 def allowed_file(filename):
@@ -59,7 +60,7 @@ def my_page_zzal_upload_post():
     title = request.form['title']
     tag = request.form['tag']
     desc = request.form['desc']
-    user_id = "lovely_zzaly"
+    user_id = USER_ID
 
     if f and allowed_file(f.filename):
         file_name = secure_filename(f.filename)
