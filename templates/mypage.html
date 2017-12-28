@@ -10,8 +10,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
   </head>
   <body>
-    {% include 'header.html'%}
-    <div class="card">
+  {% include 'header.html'%}
+    <div class="container">
+
+    <div class="card" style="margin-top: 30px">
       <div class="card-header">
         Profile
       </div>
@@ -20,14 +22,6 @@
         <li class="list-group-item"></li>
         <li class="list-group-item">Vestibulum at eros</li>
       </ul>
-    </div>
-    <div class="row">
-      <div class="col-xs-6 col-md-3">
-        <a href="#" class="thumbnail">
-          <img src="/static/image/logo.png">
-        </a>
-      </div>
-      ...
     </div>
         {% for zzal in zzal_list %}
 {#            {% sum += zzal.ref_count %}#}
@@ -52,8 +46,8 @@
             {% endif %}
         {% endfor %}
 
-
-    
+    </div>
+  </body>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -62,5 +56,4 @@
     <script>
         $("alert").alert()
     </script>
-  </body>
 </html>
