@@ -29,6 +29,8 @@ def incr(name, amount=1):
 def hincr(name, key, amount=1):
     return rds.hincrby(name,key,amount)
 
+def hkeys(name):
+    return rds.hkeys(name)
 
 def zadd(key, value):
     return rds.zadd(key, value, 0)
@@ -43,6 +45,8 @@ def exist(key) :
 def hset(name, key, value):
     rds.hset(name, key, value)
 
+def hmset(name, mapping):
+    rds.hmset(name, mapping)
 
 def hget(name, key):
     return rds.hget(name, key)
