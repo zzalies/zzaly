@@ -28,9 +28,13 @@
           </ul>
         </div>
         <div class="card-body">
-            <h4 class="card-title">Text</h4>
+            <h4 class="card-title" id="card-title">Title</h4>
+            <textarea type="text" class="form-control" id="title-text-box" placeholder="Title"></textarea>
+            <button id="card-title-btn" class="btn btn-danger" type="button">insert</button> 
+            <div id="image-box"> 
+            </div>
             <div class="input-group input-group-lg">
-                <textarea type="text" class="form-control" placeholder="Please type text" aria-label="Body" aria-describedby="sizing-addon1" rows="5"></textarea>
+                <textarea type="text" id="input-box" class="form-control" placeholder="Please type text" aria-label="Body" aria-describedby="sizing-addon1" rows="5"></textarea>
                 <span class="input-group-btn">
                     <button class="btn btn-dark" type="submit">Create</button>
                 </span>
@@ -38,7 +42,6 @@
         </div>
       </div>
     
-
     <div class="card-deck">
         <div class="card text-white bg-dark mb-3" style="max-width: 35rem;">
             <div class="card-body">
@@ -83,7 +86,64 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script>
+        // insert 버튼 입력시 로직
+        $("#card-title-btn").click(function(e) {
+            var title = document.getElementById("title-text-box").value;
+            document.getElementById("card-title").innerText = title;
+        })
+        // 텍스트 입력 박스에서 @gif 키워드 디텍션 로직
+        var flag=false;
+        var httpRequest;
+        $("#input-box").keyup(function(e){
+            var text = document.getElementById("input-box").value;
+            if (flag) {
+                if (text.indexOf('@gif') == -1) {
+                    flag=false;
+                    return;
+                }
+
+                var image = document.getElementById("image-box");
+                image.innerHTML = '<img src="https://lumiere-a.akamaihd.net/v1/images/smile_-_pooh_b9b622d6.gif">'
+                
+                console.info('log');
+                return;
+            }
+
+            if (text.indexOf('@gif') != -1) {
+                flag=true;
+                GetGIFList('good');
+            }
+            var image = document.getElementById("image-box");
+            console.log(image.innerHTML)
+        })
+        
+        function GetGIFList(keyword) {
+            $.ajax({
+                type:"GET",
+                //url:"static/test.html",
+                url:"search/jeny",
+               // data : {name : "홍길동"},
+                //dataType : "text",
+                success: function(data){
+                    alert(data)
+                },
+                error: function(xhr, status, error) {
+                    alert("error");
+                }  
+            });
+        }
+
+        function PostBoard(card_title,input_box,image_box) {
+            var title = document.getElementById("card-title").value;
+            var body = document.getElementById("input-box").value;
+            var image = document.getElementById("image-box").innerHTML;
+            //card-title : 제목
+            //input-box : 글 내용
+            //image-box : gif url
+        }
+
     </script>
   </body>
 </html>
