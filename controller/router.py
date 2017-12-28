@@ -85,11 +85,17 @@ def index():
 def my_page():
     total_count = 0
     # statistics = Statistics(total_count)
-    zzal_list = db.get_post_by_user(USER_ID)
-    for zzal in zzal_list:
-        total_count += zzal["ref_count"]
 
-    return render_template("mypage.html", zzal_list=zzal_list, total_count=total_count)
+    zzal_list = db.get_post_by_user(USER_ID)
+    temp = ""
+    for zzal in zzal_list:
+        ref_count_byte  = "ref_count"
+
+        print(zzal.encode('utf-8'))
+        total_count += int(zzal[ref_count_byte.encode('utf-8')].decode('utf-8'))
+        temp=zzal["url".encode('utf-8')].decode('utf-8')
+
+    return render_template("mypage.html", zzal_list=zzal_list, total_count=total_count, temp=temp)
 
 def allowed_file(filename):
     ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -103,16 +109,15 @@ def root_path():
 
 def my_page_zzal_upload_post():
     print('1')
-
+    print(request.values.values())
     title = request.form['title']
-
     tag = request.form['tag']
     desc = request.form['desc']
     print('2')
 
     f = request.files['upload_file']
     user_id = USER_ID
-    print(title,tag,desc)
+    print(title, tag, desc)
 
     if f and allowed_file(f.filename):
         file_name = secure_filename(f.filename)
@@ -159,3 +164,11 @@ def page_not_found():
     return render_template('404.html'), 404
 
 
+
+def bytes_to_int(bytes):
+    result = 0
+
+    for b in bytes:
+        result = result * 256 + int(b)
+
+    return result

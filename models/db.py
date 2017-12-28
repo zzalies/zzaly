@@ -11,12 +11,18 @@ def init():
 #     # 태그별 이미지 등록
 #     pass
 
-def reg_image(user_id, tag, url, title, desc, ref_count, like):
+def reg_image(user_id, tag, url, title, desc, ref_count=0, like=0):
     #userid, tag, url, title , descript, ref_count, like
 
-    image_fields = {"user_id","tag","url","title","desc","ref_count", "like"}
-    image_values = {user_id, tag, url, title, desc, ref_count, like}
-    rds.hset("image/"+title,image_fields,image_values) #image 정보 저장
+    image_value = {}
+    image_value["user_id"]=user_id
+    image_value["tag"]=tag
+    image_value["url"]=url
+    image_value["title"]=title
+    image_value["desc"]=desc
+    image_value["ref_count"]=ref_count
+    image_value["like"]=like
+    rds.hmset("image/"+title,image_value) #image 정보 저장
 
 
     rds.hset("tag/"+tag, title, url) #tag별 이미지 리스트 저장
@@ -25,11 +31,15 @@ def reg_image(user_id, tag, url, title, desc, ref_count, like):
 
 def get_post_by_user(user_id):
     # 유저별 게시물 가져오기
-    return rds.hgetall("user/"+user_id)
+    keylist = rds.hkeys("user/"+user_id)
+    result = list()
+    for item in keylist :
+        result.append(get_image_metadata(item.decode('utf-8')))
+    return result
 
 def get_post_by_tag(tag):
     # 태그별 게시물 가져오기
-    return rds.hgetall("tag/"+tag)
+    return rds.hkeys("tag/"+tag)
 
 def get_image_metadata(title):
     # 이미지 메타데이터 가져오기
@@ -53,4 +63,6 @@ def get_post():
 
 if __name__ == '__main__':
     init()
-    print(get_post())
+    reg_image("user_id","tag", "url", "happy", "desc")
+
+    print(get_post_by_user('happy'))
