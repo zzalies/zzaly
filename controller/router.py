@@ -81,6 +81,13 @@ def get_post_list():
 def index():
     return render_template("index.html", zzal_list=get_post_list())
 
+def bytemap_to_stringmap(bytemap):
+    stringmap={}
+    for k in bytemap.keys():
+        v=bytemap[k]
+        stringmap[k.decode('utf-8')]=v.decode('utf-8')
+
+    return stringmap
 
 def my_page():
     total_count = 0
@@ -90,8 +97,8 @@ def my_page():
     temp = ""
     for zzal in zzal_list:
         ref_count_byte  = "ref_count"
-
-        print(zzal.encode('utf-8'))
+        print(bytemap_to_stringmap(zzal))
+        print(zzal["url".encode('utf-8')].decode('utf-8'))
         total_count += int(zzal[ref_count_byte.encode('utf-8')].decode('utf-8'))
         temp=zzal["url".encode('utf-8')].decode('utf-8')
 

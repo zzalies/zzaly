@@ -5,8 +5,7 @@ rds = None
 
 def make_connection():
     global rds
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0, charset='utf-8')
-    rds = redis.Redis(connection_pool=pool, max_connections=10)
+    rds = redis.StrictRedis(host='localhost', port=6379, db=0, charset='utf-8')
     print("redis connection make ok")
 
 def get(key):
