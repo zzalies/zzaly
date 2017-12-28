@@ -5,29 +5,43 @@ import redis
 import json
 from werkzeug.utils import secure_filename
 
-db = redis.Redis('localhost') #connect to server
+db = redis.Redis('localhost')  # connect to server
 
-class zzal:
+class Zzal:
     '''
     creator = "me"
     url = "https://media.giphy.com/media/l0MYyDa8S9ghzNebm/giphy.gif"
     tag = "twice"
     '''
-    def set(self, creator, url, tag):
+
+    def set(self, creator, url, tag, ref_count, desc):
         self.creator = creator
         self.url = url
         self.tag = tag
+        self.desc = desc
+        self.ref_count = ref_count
 
     def __init__(self):
         pass
 
-    def __init__(self, creator, url, tag):
-        self.set(creator, url, tag)
+    def __init__(self, creator, url, tag, ref_count, desc):
+        self.set(creator, url, tag, ref_count, desc)
+
+
+class Statistics:
+    def set(self, total_ref_count):
+        self.total_ref_count = total_ref_count
+
+    def __init__(self):
+        pass
+
+    def __init__(self, total_ref_count):
+        self.set(total_ref_count)
 
 def get_zzal_list():
-    return [zzal("me", "http://localhost:8080/static/upload_image/sana.gif", "twice"),
-            zzal("me", "http://localhost:8080/static/upload_image/twice.gif", "twice"),
-            zzal("me", "http://localhost:8080/static/upload_image/irene.gif", "red velvet")]
+    return [Zzal("me", "http://localhost:8080/static/upload_image/sana.gif", "twice", 3, "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer."),
+            Zzal("me", "http://localhost:8080/static/upload_image/twice.gif", "twice", 3, "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer."),
+            Zzal("me", "http://localhost:8080/static/upload_image/irene.gif", "red velvet", 3, "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.")]
 
 
 def index():
@@ -35,7 +49,22 @@ def index():
 
 
 def my_page():
-    return render_template("mypage.html")
+
+    zzal_list = [Zzal("me", "http://localhost:8080/static/upload_image/sana.gif", "twice", 3, "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer."),
+                 Zzal("me", "http://localhost:8080/static/upload_image/twice.gif", "twice", 3, "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer."),
+                 Zzal("me", "http://localhost:8080/static/upload_image/irene.gif", "red velvet", 3, "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer."),
+                 Zzal("me", "http://localhost:8080/static/upload_image/irene.gif", "red velvet", 3, "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer."),
+                 Zzal("me", "http://localhost:8080/static/upload_image/irene.gif", "red velvet", 3, "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer."),
+                 Zzal("me", "http://localhost:8080/static/upload_image/irene.gif", "red velvet", 3, "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer."),
+                 Zzal("me", "http://localhost:8080/static/upload_image/irene.gif", "red velvet", 3, "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.")]
+
+    total_count = 0
+    for z in zzal_list:
+        total_count += z.ref_count
+
+    statistics = Statistics(total_count)
+
+    return render_template("mypage.html", zzal_list=zzal_list, statistics=statistics)
 
 
 def allowed_file(filename):
@@ -43,16 +72,16 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
+
 def my_page_zzal_upload_post(upload_folder):
 
     f = request.files['file']
     title = request.form['title']
     tag = request.form['tag']
     desc = request.form['description']
-    zzal(title, tag, desc)
+    Zzal(title, tag, desc)
 
     json.dumps()
-
 
     if f and allowed_file(f.filename):
         filename = secure_filename(f.filename)

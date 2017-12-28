@@ -11,17 +11,48 @@
   </head>
   <body>
     {% include 'header.html'%}
-    <div class="card-deck">
-        <div class="card text-white bg-dark mb-3" style="max-width: 35rem;">
-            <img class="card-img-top" src="https://tctechcrunch2011.files.wordpress.com/2015/08/safe_image.gif?w=705" alt="Card image cap">
-            <div class="card-body">
-                <h4 class="card-title">Title</h4>
-                <p class="card-text">Create At:</p>
-                <p class="card-text">Use Count:</p>
-
-            </div>
-        </div>
+    <div class="card">
+      <div class="card-header">
+        Profile
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Total referenced count : {{ statistics.total_ref_count }} </li>
+        <li class="list-group-item"></li>
+        <li class="list-group-item">Vestibulum at eros</li>
+      </ul>
     </div>
+    <div class="row">
+      <div class="col-xs-6 col-md-3">
+        <a href="#" class="thumbnail">
+          <img src="/static/image/logo.png">
+        </a>
+      </div>
+      ...
+    </div>
+        {% for zzal in zzal_list %}
+{#            {% sum += zzal.ref_count %}#}
+            {% if loop.index  % 4 == 1 %}
+                <div class="card-group">
+            {% endif %}
+                <div class="card">
+                    <img class="card-img-top" src="{{ zzal.url }}" alt="Card image cap">
+                    <div class="card-body">
+                      <h4 class="card-title">Card title {{ loop.index }}</h4>
+                      <p class="card-text">{{ zzal.desc }}</p>
+                        <p class="card-text"> ref count : {{ zzal.ref_count }}</p>
+                        <a href="#" class="btn btn-primary">Edit</a>
+                    </div>
+                    <div class="card-footer">
+                      <small class="text-muted">Last updated 3 mins ago</small>
+
+                    </div>
+                </div>
+            {% if loop.index % 4 == 4 %}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+
     
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
