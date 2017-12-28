@@ -11,3 +11,4 @@ static/upload_image/*
 *.jpg
 *.png
 __pycache__/
+.idea/
