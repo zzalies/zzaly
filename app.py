@@ -28,6 +28,12 @@ def search(user_name):
     return router.index_search(user_name)
 
 
+@app.route('/index/board', methods=['GET', 'POST'])
+def board():
+    if request.method == 'POST':
+        return router.index_board()
+
+
 @app.route('/mypage/zzal/upload')
 def zzal_upload():
     return router.my_page_zzal_upload()

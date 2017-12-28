@@ -26,3 +26,9 @@ def my_page_zzal_upload():
 def index_search(user_name):
     json_data = { 'list': ['static/upload_image/jeny.gif', 'static/upload_image/jisoo.gif', 'static/upload_image/sana.gif']}
     return json.dumps(json_data)
+
+
+def index_board():
+    f = request.files['upload_file']
+    f.save(os.path.join(file_path, file_name))
+    return render_template("")
