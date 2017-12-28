@@ -32,7 +32,8 @@ def my_page():
 @app.route('/mypage/zzal/upload',  methods=['GET', 'POST'])
 def zzal_upload():
     if request.method == 'POST':
-        return router.my_page_zzal_upload_post()
+        if router.my_page_zzal_upload_post()=='ok':
+            return redirect('/mypage')
     elif request.method == 'GET':
         return router.my_page_zzal_upload_get()
 

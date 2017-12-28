@@ -93,14 +93,13 @@ def my_page():
     total_count = 0
     # statistics = Statistics(total_count)
 
-    zzal_list = db.get_post_by_user(USER_ID)
+    zzal_list_byte = db.get_post_by_user(USER_ID)
     temp = ""
-    for zzal in zzal_list:
-        ref_count_byte  = "ref_count"
-        print(bytemap_to_stringmap(zzal))
-        print(zzal["url".encode('utf-8')].decode('utf-8'))
-        total_count += int(zzal[ref_count_byte.encode('utf-8')].decode('utf-8'))
-        temp=zzal["url".encode('utf-8')].decode('utf-8')
+    zzal_list=list()
+    for zzal_byte in zzal_list_byte:
+        zzal = bytemap_to_stringmap(zzal_byte)
+        total_count += int(zzal["ref_count"])
+        zzal_list.append(zzal)
 
     return render_template("mypage.html", zzal_list=zzal_list, total_count=total_count, temp=temp)
 
@@ -135,10 +134,9 @@ def my_page_zzal_upload_post():
         return 'fail'
 
 
-    url = file_path+"/"+file_name
+    url = "./static/upload_image/"+file_name
     db.reg_image(user_id, tag, url, title, desc, 0 ,0 )
     return 'ok'
-
 
 
 def my_page_zzal_upload_get():
