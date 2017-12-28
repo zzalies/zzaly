@@ -13,27 +13,41 @@
 
   <body>
   <div class="container">
-      <div class="jumbotron" style="margin-top: 30px">
-{#          <h1 class="display-3">Hello, world!</h1>#}
-          <form>
+      <div class="card text-center" style="margin-top: 30px; margin-bottom: 30px">
+          <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+              <li class="nav-item">
+                <a class="nav-link active" href="#">Active</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+              </li>
+            </ul>
+          </div>
+          <div class="card-body">
+           <form>
               <div class="form-group">
                 <div class="row">
                     <div class="col-md-3">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        <input type="title" class="form-control" id="index_title" aria-describedby="titleHelp" placeholder="Enter title">
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-7">
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                            <input type="text" class="form-control" id="index_text" placeholder="text">
                         </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
               </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
             </form>
-        </div>
+          </div>
+      </div>
+
 {#    <div class="card-body">#}
 {#        <h4 class="card-title">Text</h4>#}
 {#        <div class="input-group input-group-lg">#}
