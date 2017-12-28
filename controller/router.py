@@ -31,5 +31,4 @@ def index_search(user_name):
 def index_board():
     body = request.form['body']
     image = request.form['image']
-    print(image)
-    return redirect("/index")
+    return "ok"
