@@ -29,7 +29,7 @@ zzal_list = [zzal, zzal, zzal]
 
 
 def index():
-    return render_template("index/index.html", zzal_list=get_post_list())
+    return render_template("index.html", zzal_list=get_post_list())
 
 
 def bytemap_to_stringmap(bytemap):
@@ -108,7 +108,7 @@ def index_search(user_name):
 
 
 def zzal_make_get():
-    return render_template("make.html")
+    return render_template("create.html")
 
 
 def zzal_make_post():
@@ -131,6 +131,7 @@ def page_not_found():
 def create_article():
     title = request.form("index_title")
     content = request.form("index_text")
+    image = request.form("gif-selected")
     db.reg_post(title, content)
     return "ok"
 
