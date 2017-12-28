@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary">Apply</button>
+                        <button type="button" class="btn btn-primary" id="index_btn">Apply</button>
                     </div>
                 </div>
                 <br>
@@ -169,12 +169,13 @@
       }
 
       function PostBoard() {
-        var title = document.getElementById("index-title").value;
-        var body = document.getElementById("index-text").value;
+        var title = document.getElementById("index_title").value;
+        var body = document.getElementById("index_text").value;
         var image = document.getElementById("gif-selected").innerHTML;
         var data = {title:title,body:body,image:image};
         var callback = function(data) {
           location.reload();
+          alert("success");
         }
         var errorback = function(xhr, status, error) {
           alert("error");
@@ -188,6 +189,10 @@
         if (search_key != "") {
           GetGIFList(search_key);
         }
+      })
+
+      $("#index_btn").click(function(e){
+        PostBoard();
       })
     </script>
 </html>
