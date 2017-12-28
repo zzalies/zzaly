@@ -1,9 +1,10 @@
 
 from flask import render_template, request
-import os
+import os, sys
 from werkzeug.utils import secure_filename
 
-server_host = 'http://10.100.103.165:8080'
+SERVER_HOST = 'http://10.100.103.165:8080'
+UPLOAD_FOLDER = 'static/upload_image'
 
 class zzal:
     '''
@@ -23,9 +24,9 @@ class zzal:
         self.set(creator, url, tag)
 
 def get_zzal_list():
-    return [zzal("me", server_host + "/static/upload_image/sana.gif", "twice"),
-            zzal("me", server_host + "/static/upload_image/twice.gif", "twice"),
-            zzal("me", server_host + "/static/upload_image/irene.gif", "red velvet")]
+    return [zzal("me", SERVER_HOST + "/static/upload_image/ending.gif", "twice"),
+            zzal("me", SERVER_HOST + "/static/upload_image/jisoo.gif", "black pink"),
+            zzal("me", SERVER_HOST + "/static/upload_image/irene.gif", "red velvet")]
 
 
 def index():
@@ -41,12 +42,19 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
-def my_page_zzal_upload_post(upload_folder):
-    f = request.files['file']
+def root_path():
+    fn = getattr(sys.modules['__main__'], '__file__')
+    root_path = os.path.abspath(os.path.dirname(fn))
+    return root_path
+
+def my_page_zzal_upload_post():
+    f = request.files['upload_file']
 
     if f and allowed_file(f.filename):
-        filename = secure_filename(f.filename)
-        f.save(os.path.join(upload_folder, filename))
+        file_name = secure_filename(f.filename)
+        file_path = os.path.join(root_path(), UPLOAD_FOLDER)
+
+        f.save(os.path.join(file_path, file_name))
         return 'success'
     else:
         return 'fail'
