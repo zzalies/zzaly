@@ -2,31 +2,38 @@
 from flask import render_template, request
 import os, sys
 from werkzeug.utils import secure_filename
+from models import db
+
 
 SERVER_HOST = 'http://10.100.103.165:8080'
 UPLOAD_FOLDER = 'static/upload_image'
 
-class zzal:
-    '''
-    creator = "me"
-    url = "https://media.giphy.com/media/l0MYyDa8S9ghzNebm/giphy.gif"
-    tag = "twice"
-    '''
-    def set(self, creator, url, tag):
-        self.creator = creator
-        self.url = url
-        self.tag = tag
+db.init()
 
-    def __init__(self):
-        pass
-
-    def __init__(self, creator, url, tag):
-        self.set(creator, url, tag)
-
+# class zzal:
+#     '''
+#     creator = "me"
+#     url = "https://media.giphy.com/media/l0MYyDa8S9ghzNebm/giphy.gif"
+#     tag = "twice"
+#     '''
+#     def __init__(self, user_id, tag, url, title, descript, ref_count=0, like=0):
+#         self.user_id = user_id
+#         self.tag = tag
+#         self.url = url
+#         self.title= title
+#         self.descript = descript
+#         self.ref_count = ref_count
+#         self.like = like
+#
+#     def like_up(self):
+#         db.like_up(self.title)
+#
+#     def count_up(self):
+#         db.count_up(self.title)
+#
+#
 def get_zzal_list():
-    return [zzal("me", SERVER_HOST + "/static/upload_image/ending.gif", "twice"),
-            zzal("me", SERVER_HOST + "/static/upload_image/jisoo.gif", "black pink"),
-            zzal("me", SERVER_HOST + "/static/upload_image/irene.gif", "red velvet")]
+    return #zzal list
 
 
 def index():
@@ -49,15 +56,24 @@ def root_path():
 
 def my_page_zzal_upload_post():
     f = request.files['upload_file']
+    title = request.form['title']
+    tag = request.form['tag']
+    desc = request.form['desc']
+    user_id = "lovely_zzaly"
 
     if f and allowed_file(f.filename):
         file_name = secure_filename(f.filename)
         file_path = os.path.join(root_path(), UPLOAD_FOLDER)
 
         f.save(os.path.join(file_path, file_name))
-        return 'success'
     else:
         return 'fail'
+
+
+    url = file_path+"/"+file_name
+    db.reg_image(user_id, tag, url, title, desc, 0 ,0 )
+    return 'ok'
+
 
 
 def my_page_zzal_upload_get():

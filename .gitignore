@@ -3,3 +3,4 @@ controller/__pycache__/__init__.cpython-36.pyc
 venv/*
 .idea/*
 *.pyc
+.DS_Store

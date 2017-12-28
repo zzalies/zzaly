@@ -12,11 +12,11 @@ def init():
 #     # 태그별 이미지 등록
 #     pass
 
-def reg_image(user_id, tag, url, title, descript, ref_count, like):
+def reg_image(user_id, tag, url, title, desc, ref_count, like):
     #userid, tag, url, title , descript, ref_count, like
 
-    image_fields = {"user_id","tag","url","title","descript","ref_count", "like"}
-    image_values = {user_id, tag, url, title, descript, ref_count, like}
+    image_fields = {"user_id","tag","url","title","desc","ref_count", "like"}
+    image_values = {user_id, tag, url, title, desc, ref_count, like}
     rds.hset("image/"+title,image_fields,image_values) #image 정보 저장
 
 
