@@ -41,7 +41,8 @@
             </div>
         </div>
       </div>
-    
+    <div id="gif-list">
+    </div>
     <div class="card-deck">
         <div class="card text-white bg-dark mb-3" style="max-width: 35rem;">
             <div class="card-body">
@@ -90,9 +91,10 @@
     <script>
         // insert 버튼 입력시 로직
         $("#card-title-btn").click(function(e) {
-            var title = document.getElementById("title-text-box").value;
-            document.getElementById("card-title").innerText = title;
+            //var title = document.getElementById("title-text-box").value;
+            document.getElementById("gif-list").innerHTML = "<img src=\"https://lumiere-a.akamaihd.net/v1/images/smile_-_pooh_b9b622d6.gif\">";
         })
+        $("c")
         // 텍스트 입력 박스에서 @gif 키워드 디텍션 로직
         var flag=false;
         var httpRequest;
@@ -115,15 +117,13 @@
                 flag=true;
                 GetGIFList('good');
             }
-            var image = document.getElementById("image-box");
-            console.log(image.innerHTML)
         })
         
         function GetGIFList(keyword) {
             $.ajax({
                 type:"GET",
                 //url:"static/test.html",
-                url:"search/jeny",
+                url:"search/" + keyword,
                // data : {name : "홍길동"},
                 //dataType : "text",
                 success: function(data){
