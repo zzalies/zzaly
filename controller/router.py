@@ -5,81 +5,20 @@ import os
 import sys
 
 
-
-#
-# class Zzal:
-#     '''
-#     creator = "me"
-#     url = "https://media.giphy.com/media/l0MYyDa8S9ghzNebm/giphy.gif"
-#     tag = "twice"
-#     '''
-#
-#     def set(self, creator, url, tag, ref_count, desc):
-#         self.creator = creator
-#         self.url = url
-#         self.tag = tag
-#         self.desc = desc
-#         self.ref_count = ref_count
-#
-#     def __init__(self):
-#         pass
-#
-#     def __init__(self, creator, url, tag, ref_count, desc):
-#         self.set(creator, url, tag, ref_count, desc)
-#
-#
-# class Statistics:
-#     def set(self, total_ref_count):
-#         self.total_ref_count = total_ref_count
-#
-#     def __init__(self):
-#         pass
-#
-#     def __init__(self, total_ref_count):
-#         self.set(total_ref_count)
-#
-# def get_zzal_list():
-#     return [Zzal("me", "http://localhost:8080/static/upload_image/sana.gif", "twice", 3, "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer."),
-#             Zzal("me", "http://localhost:8080/static/upload_image/twice.gif", "twice", 3, "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer."),
-#             Zzal("me", "http://localhost:8080/static/upload_image/irene.gif", "red velvet", 3, "This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.")]
-# =======
-
-
-
 SERVER_HOST = 'http://10.100.103.165:8080'
 UPLOAD_FOLDER = 'static/upload_image'
 USER_ID = "lovely_zzaly"
 
 db.init()
 
-# class zzal:
-#     '''
-#     creator = "me"
-#     url = "https://media.giphy.com/media/l0MYyDa8S9ghzNebm/giphy.gif"
-#     tag = "twice"
-#     '''
-#     def __init__(self, user_id, tag, url, title, descript, ref_count=0, like=0):
-#         self.user_id = user_id
-#         self.tag = tag
-#         self.url = url
-#         self.title= title
-#         self.descript = descript
-#         self.ref_count = ref_count
-#         self.like = like
-#
-#     def like_up(self):
-#         db.like_up(self.title)
-#
-#     def count_up(self):
-#         db.count_up(self.title)
-#
-#
+
 def get_post_list():
     return db.get_post()
 
 
 def index():
     return render_template("index.html", zzal_list=get_post_list())
+
 
 def bytemap_to_stringmap(bytemap):
     stringmap={}
@@ -89,13 +28,14 @@ def bytemap_to_stringmap(bytemap):
 
     return stringmap
 
+
 def my_page():
     total_count = 0
     # statistics = Statistics(total_count)
 
     zzal_list_byte = db.get_post_by_user(USER_ID)
     temp = ""
-    zzal_list=list()
+    zzal_list = list()
     for zzal_byte in zzal_list_byte:
         zzal = bytemap_to_stringmap(zzal_byte)
         total_count += int(zzal["ref_count"])
@@ -103,10 +43,12 @@ def my_page():
 
     return render_template("mypage.html", zzal_list=zzal_list, total_count=total_count, temp=temp)
 
+
 def allowed_file(filename):
     ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
 
 def root_path():
     fn = getattr(sys.modules['__main__'], '__file__')
@@ -169,11 +111,9 @@ def page_not_found():
     return render_template('404.html'), 404
 
 
+def create_article():
+    title = request.form("index_title")
+    content = request.form("index_text")
+    db.reg_post(title, content)
+    return "ok"
 
-def bytes_to_int(bytes):
-    result = 0
-
-    for b in bytes:
-        result = result * 256 + int(b)
-
-    return result

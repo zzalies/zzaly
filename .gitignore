@@ -4,3 +4,4 @@ venv/*
 .idea/*
 *.pyc
 .DS_Store
+static/upload_image/*
