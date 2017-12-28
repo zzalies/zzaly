@@ -1,11 +1,10 @@
 
 from flask import render_template, request
-import os
-
-import json
+import os, sys
 from werkzeug.utils import secure_filename
 
-db = redis.Redis('localhost') #connect to server
+SERVER_HOST = 'http://10.100.103.165:8080'
+UPLOAD_FOLDER = 'static/upload_image'
 
 class zzal:
     '''
@@ -25,9 +24,9 @@ class zzal:
         self.set(creator, url, tag)
 
 def get_zzal_list():
-    return [zzal("me", "http://localhost:8080/static/upload_image/sana.gif", "twice"),
-            zzal("me", "http://localhost:8080/static/upload_image/twice.gif", "twice"),
-            zzal("me", "http://localhost:8080/static/upload_image/irene.gif", "red velvet")]
+    return [zzal("me", SERVER_HOST + "/static/upload_image/ending.gif", "twice"),
+            zzal("me", SERVER_HOST + "/static/upload_image/jisoo.gif", "black pink"),
+            zzal("me", SERVER_HOST + "/static/upload_image/irene.gif", "red velvet")]
 
 
 def index():
@@ -43,21 +42,19 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
-def my_page_zzal_upload_post(upload_folder):
+def root_path():
+    fn = getattr(sys.modules['__main__'], '__file__')
+    root_path = os.path.abspath(os.path.dirname(fn))
+    return root_path
 
-    f = request.files['file']
-    title = request.form['title']
-    tag = request.form['tag']
-    desc = request.form['description']
-    zzal(title, tag, desc)
-
-    json.dumps()
-
+def my_page_zzal_upload_post():
+    f = request.files['upload_file']
 
     if f and allowed_file(f.filename):
-        filename = secure_filename(f.filename)
-        f.save(os.path.join(upload_folder, filename))
+        file_name = secure_filename(f.filename)
+        file_path = os.path.join(root_path(), UPLOAD_FOLDER)
 
+        f.save(os.path.join(file_path, file_name))
         return 'success'
     else:
         return 'fail'
@@ -68,11 +65,25 @@ def my_page_zzal_upload_get():
 
 
 def index_search():
-    return "search"
+    key = request.args.get('key')
+    return key
 
 
-def zzal_make():
+def zzal_make_get():
     return render_template("make.html")
+
+
+def zzal_make_post():
+    file_cnt = request.form.get('file_cnt')
+
+    for i in range(file_cnt):
+        file_name = 'sys_' + str(i)
+        f = request.files[file_name]
+        is_file = request.form.get('is_file')
+
+        return 'success'
+    else:
+        return 'fail'
 
 
 def page_not_found():
