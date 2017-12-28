@@ -21,6 +21,10 @@ def set(key, value):
 def incr(name, amount=1):
     return rds.incr(name, amount)
 
+def hincr(name, key, amount=1):
+    return rds.hincrby(name,key,amount)
+
+
 def zadd(key, value):
     return rds.zadd(key, value, 0)
 

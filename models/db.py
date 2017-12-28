@@ -37,5 +37,9 @@ def get_image_metadata(title):
     return rds.hgetall("image/"+title)
 
 def count_up(title):
-    rds.incr(title,1)
+    rds.hincr(title,"ref_count",1)
+    return
+
+def like_up(title):
+    rds.hincr(title,"like",1)
     return
