@@ -81,9 +81,9 @@ def my_page_zzal_upload_get():
     return render_template("upload.html")
 
 
-def index_search():
-    key = request.args.get('key')
-    return key
+def index_search(tag):
+    key = request.args.get(tag)
+    return db.get_post_by_tag(tag)
 
 
 def zzal_make_get():
