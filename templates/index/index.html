@@ -102,13 +102,13 @@
             var image_box = document.getElementById("gif-list");
             var html_source = "";
             for (var num in url_array) {
-                html_source += "<img src=\""+url_array[num]+"\" id=\""+url_array[num]+"\" onclick=\"ImageSelect(this)\">\n";
+                html_source += "<img src=\""+url_array[num]+"\" id=\""+url_array[num]+"\" onclick=\"ImageSelect(this)\" width=\"100px\" height=\"100px\">\n";
             }
             image_box.innerHTML = html_source;
         }
 
         function ImageSelect(id) {
-            document.getElementById("image-box").innerHTML += "<img src=\""+id.id+"\">";
+            document.getElementById("image-box").innerHTML += "<img src=\""+id.id+"\" width=\"100px\" height=\"100px\">";
             document.getElementById("gif-list").innerHTML = "";
         }
         // 텍스트 입력 박스에서 @gif 키워드 디텍션 로직
@@ -143,7 +143,6 @@
                // data : {name : "홍길동"},
                 //dataType : "text",
                 success: function(data){
-                    alert(data);
                     var dict = JSON.parse(data);
                     ImageInsert(dict["list"]);
                 },

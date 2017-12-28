@@ -24,5 +24,5 @@ def my_page_zzal_upload():
 
 
 def index_search(user_name):
-    json_data = { 'list': ['http://10.100.103.165:8080/static/upload_image/jeny.gif']}
+    json_data = { 'list': ['static/upload_image/jeny.gif', 'static/upload_image/jisoo.gif', 'static/upload_image/sana.gif']}
     return json.dumps(json_data)
