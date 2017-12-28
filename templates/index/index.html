@@ -28,16 +28,19 @@
           </ul>
         </div>
         <div class="card-body">
-            <h4 class="card-title" id="card-title">Title</h4>
-            <textarea type="text" class="form-control" id="title-text-box" placeholder="Title"></textarea>
-            <button id="card-title-btn" class="btn btn-danger" type="button">insert</button> 
-            <div id="image-box"> 
-            </div>
+            <h2 class="zzal-title" id="zzal-title">DashBoard</h2>
+            <p>seleted gif</p>
+            <div id="image-box"></div>
             <div class="input-group input-group-lg">
                 <textarea type="text" id="input-box" class="form-control" placeholder="Please type text" aria-label="Body" aria-describedby="sizing-addon1" rows="5"></textarea>
                 <span class="input-group-btn">
-                    <button class="btn btn-dark" type="submit">Create</button>
+                    <button id="card-body-btn" class="btn btn-dark" type="submit">Create</button>
                 </span>
+            </div>
+            <h5 class="zzal-title" id="zzal-title">Zzal Search</h5>
+            <div class="input-group input-group-lg">
+                <textarea type="text" class="form-control" id="title-text-box" placeholder="hash tag" rows="1"></textarea>
+                <button id="card-title-btn" class="btn btn-danger" type="button">Search</button> 
             </div>
         </div>
       </div>
@@ -94,10 +97,10 @@
             var title = document.getElementById("title-text-box").value;
             console.log(title);
             GetGIFList(title);
-            //var list = ["http://media3.giphy.com/media/kEKcOWl8RMLde/giphy.gif","https://tctechcrunch2011.files.wordpress.com/2015/08/safe_image.gif","https://media0.giphy.com/media/3o6ozxasMHDoJ2OP7i/giphy.gif"]
-            //ImageInsert(list)
         })
-
+        $("#card-body-btn").click(function(e) {
+            PostBoard();
+        })
         function ImageInsert(url_array) {
             var image_box = document.getElementById("gif-list");
             var html_source = "";
@@ -111,37 +114,11 @@
             document.getElementById("image-box").innerHTML += "<img src=\""+id.id+"\" width=\"100px\" height=\"100px\">";
             document.getElementById("gif-list").innerHTML = "";
         }
-        // 텍스트 입력 박스에서 @gif 키워드 디텍션 로직
-        var flag=false;
-        var httpRequest;
-        $("#input-box").keyup(function(e){
-            var text = document.getElementById("input-box").value;
-            if (flag) {
-                if (text.indexOf('@gif') == -1) {
-                    flag=false;
-                    return;
-                }
-
-                var image = document.getElementById("image-box");
-                image.innerHTML = '<img src="https://lumiere-a.akamaihd.net/v1/images/smile_-_pooh_b9b622d6.gif">'
-                
-                console.info('log');
-                return;
-            }
-
-            if (text.indexOf('@gif') != -1) {
-                flag=true;
-                GetGIFList('good');
-            }
-        })
         
         function GetGIFList(keyword) {
             $.ajax({
                 type:"GET",
-                //url:"static/test.html",
                 url:"index/search/" + keyword,
-               // data : {name : "홍길동"},
-                //dataType : "text",
                 success: function(data){
                     var dict = JSON.parse(data);
                     ImageInsert(dict["list"]);
@@ -152,13 +129,21 @@
             });
         }
 
-        function PostBoard(card_title,input_box,image_box) {
-            var title = document.getElementById("card-title").value;
+        function PostBoard() {
             var body = document.getElementById("input-box").value;
             var image = document.getElementById("image-box").innerHTML;
-            //card-title : 제목
-            //input-box : 글 내용
-            //image-box : gif url
+            var dict = {body:body,image:image};
+            $.ajax({
+                type:"POST",
+                url:"index/board",
+                data:dict,
+                success: function(data){
+                    console.log("게시글 등록" + data);
+                },
+                error: function(xhr, status, error) {
+                    alert("error");
+                }  
+            });
         }
 
     </script>
