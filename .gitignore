@@ -5,3 +5,9 @@ venv/*
 *.pyc
 .DS_Store
 static/upload_image/*
+.DS_Store
+*.jpeg
+*.gif
+*.jpg
+*.png
+__pycache__/

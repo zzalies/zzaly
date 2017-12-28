@@ -43,7 +43,7 @@ def get_post_by_user(user_id):
 
 def get_post_by_tag(tag):
     # 태그별 게시물 가져오기
-    return rds.hkeys("tag/"+tag)
+    return rds.hgetall("tag/"+tag)
 
 
 def get_image_metadata(title):

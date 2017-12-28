@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Zzalies</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  </head>
+  <body>
+      <div class="card">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" href="index.html">Create</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="upload.html">Upload</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="make.html">Make</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="list.html">List</a>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body">
+            <h2 class="zzal-title" id="zzal-title">DashBoard</h2>
+            <p>seleted gif</p>
+            <div id="image-box"></div>
+            <div class="input-group input-group-lg">
+                <textarea type="text" id="input-box" class="form-control" placeholder="Please type text" aria-label="Body" aria-describedby="sizing-addon1" rows="5"></textarea>
+                <span class="input-group-btn">
+                    <button id="card-body-btn" class="btn btn-dark" type="submit">Create</button>
+                </span>
+            </div>
+            <h5 class="zzal-title" id="zzal-title">Zzal Search</h5>
+            <div class="input-group input-group-lg">
+                <textarea type="text" class="form-control" id="title-text-box" placeholder="hash tag" rows="1"></textarea>
+                <button id="card-title-btn" class="btn btn-danger" type="button">Search</button> 
+            </div>
+        </div>
+      </div>
+    <div id="gif-list">
+    </div>
+    <div class="card-deck">
+        <div class="card text-white bg-dark mb-3" style="max-width: 35rem;">
+            <div class="card-body">
+                <h4 class="card-title">Title</h4>
+                <p class="card-text">Create At:</p>
+                <p class="card-text">Create by:</p>
+                <p class="card-text">View:</p>
+            </div>
+            <a class="btn btn-danger" href="#" role="button">More</a>
+        </div>
+        <div class="card text-white bg-dark mb-3" style="max-width: 35rem;">
+            <div class="card-body">
+                <h4 class="card-title">Title</h4>
+                <p class="card-text">Create At:</p>
+                <p class="card-text">Create by:</p>
+                <p class="card-text">View:</p>
+            </div>
+            <a class="btn btn-danger" href="#" role="button">More</a>
+        </div>
+        <div class="card text-white bg-dark mb-3" style="max-width: 35rem;">
+            <div class="card-body">
+                <h4 class="card-title">Title</h4>
+                <p class="card-text">Create At:</p>
+                <p class="card-text">Create by:</p>
+                <p class="card-text">View:</p>
+            </div>
+            <a class="btn btn-danger" href="#" role="button">More</a>
+        </div>
+        <div class="card text-white bg-dark mb-3" style="max-width: 35rem;">
+            <div class="card-body">
+                <h4 class="card-title">Title</h4>
+                <p class="card-text">Create At:</p>
+                <p class="card-text">Create by:</p>
+                <p class="card-text">View:</p>
+            </div>
+            <a class="btn btn-danger" href="#" role="button">More</a>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script>
+        // insert 버튼 입력시 로직
+        $("#card-title-btn").click(function(e) {
+            var title = document.getElementById("title-text-box").value;
+            console.log(title);
+            GetGIFList(title);
+        })
+        $("#card-body-btn").click(function(e) {
+            PostBoard();
+        })
+        function ImageInsert(url_array) {
+            var image_box = document.getElementById("gif-list");
+            var html_source = "";
+            for (var num in url_array) {
+                html_source += "<img src=\""+url_array[num]+"\" id=\""+url_array[num]+"\" onclick=\"ImageSelect(this)\" width=\"100px\" height=\"100px\">\n";
+            }
+            image_box.innerHTML = html_source;
+        }
+
+        function ImageSelect(id) {
+            document.getElementById("image-box").innerHTML += "<img src=\""+id.id+"\" width=\"100px\" height=\"100px\">";
+            document.getElementById("gif-list").innerHTML = "";
+        }
+        
+        function GetGIFList(keyword) {
+            $.ajax({
+                type:"GET",
+                url:"index/search/" + keyword,
+                success: function(data){
+                    var dict = JSON.parse(data);
+                    ImageInsert(dict["list"]);
+                },
+                error: function(xhr, status, error) {
+                    alert("error");
+                }  
+            });
+        }
+
+        function PostBoard() {
+            var body = document.getElementById("input-box").value;
+            var image = document.getElementById("image-box").innerHTML;
+            var dict = {body:body,image:image};
+            $.ajax({
+                type:"POST",
+                url:"index/board",
+                data:dict,
+                success: function(data){
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert("error");
+                }  
+            });
+        }
+
+    </script>
+  </body>
+</html>
