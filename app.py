@@ -1,28 +1,28 @@
 from flask import Flask, render_template, request, redirect, url_for
 from controller import router
 
-
 ### page ##
 
 app = Flask(__name__)
-UPLOAD_FOLDER = './static/upload_image'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-temp = "dddd"
 
 @app.route('/')
 def root():
     return router.index()
-
 
 @app.route('/index')
 def index():
     return router.index()
 
 
-@app.route('/index/search')
-def search():
-    return router.index_search()
+@app.route('/index/search/<user_name>')
+def search(user_name):
+    return router.index_search(user_name)
+
+
+@app.route('/index/board', methods=['GET', 'POST'])
+def board():
+    if request.method == 'POST':
+        return router.index_board()
 
 
 @app.route('/mypage')
@@ -33,9 +33,10 @@ def my_page():
 @app.route('/mypage/zzal/upload',  methods=['GET', 'POST'])
 def zzal_upload():
     if request.method == 'POST':
-        return router.my_page_zzal_upload_post(UPLOAD_FOLDER)
-
-    return router.my_page_zzal_upload_get()
+        if router.my_page_zzal_upload_post()=='ok':
+            return redirect('/mypage')
+    elif request.method == 'GET':
+        return router.my_page_zzal_upload_get()
 
 
 
@@ -53,6 +54,12 @@ def zzal_make():
 def page_not_found(e):
     return router.page_not_found()
 
+
+
+## functions
+
+# @app.route('/mypage/zzal/upload')
+# def
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
