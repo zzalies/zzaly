@@ -132,8 +132,11 @@ def create_article():
     title = request.form("index_title")
     content = request.form("index_text")
     image = request.form("gif-selected")
-    db.reg_post(title, content)
+    db.reg_post(title, content, image)
     return "ok"
+
+def get_article():
+    return db.get_post()
 
 '''
 def index_search(user_name):
