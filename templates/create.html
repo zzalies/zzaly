@@ -11,12 +11,22 @@
   </head>
   <body>
       {% include 'header.html'%}
+
       <div class="container">
-          <div class="card" style="margin-top: 30px">
-            <div class="card-header">
-              Create Page
-            </div>
+        <div class="card text-center" style="margin-top: 30px; margin-bottom: 30px">
+          <div class="card-header">
+            Create Page
+            <ul class="nav nav-tabs card-header-tabs">
+              <li class="nav-item">
+                <a class="nav-link active" href="#">FILE</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">URL</a>
+              </li>
+            </ul>
+
             <ul class="list-group list-group-flush">
+              <!--
               <div class="card-body">
                 <h5 class="card-title">Making GIF</h5>
                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -28,10 +38,27 @@
                     <button type="button" class="btn btn-primary" id="url_button">IMG Add</button>
                   </div>
                 </div>
+                -->
+              <div class="card-body">
+                <h5 class="card-title">Making GIF</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+
+                <div class="card" align="center">
+                  <form action="/mypage/zzal/make" method="POST" enctype = "multipart/form-data">
+                    <input type="file" class="form-control-file is-invalid" name="upload_image" accept=".jpg, .jpeg, .png, .gif" multiple>
+                    <button class="btn btn-primary">MAKE</button>
+                  </form>
+                </div>
+
+                <br/> <br/>
+
+                <div id="preview">
+                </div>
               </div>
             </ul>
           </div>
         </div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script>
@@ -39,7 +66,82 @@
       HeaderTapActive(page);
 
       var url_list = []
-      
+
+      var input = document.querySelector('input');
+      var preview = document.getElementById('preview');
+
+      input.addEventListener('change', updateImageDisplay);
+
+      var fileTypes = [
+        'image/jpeg',
+        'image/pjpeg',
+        'image/png',
+        'image/gif'
+      ]
+
+      function validFileType(file) {
+        for(var i = 0; i < fileTypes.length; i++) {
+          if(file.type === fileTypes[i]) {
+            return true;
+          }
+        }
+
+        return false;
+      }
+
+      function updateImageDisplay() {
+        while(preview.firstChild) {
+          preview.removeChild(preview.firstChild);
+        }
+
+        var curFiles = input.files;
+        if(curFiles.length === 0) {
+          var para = document.createElement('p');
+          para.textContent = 'No files currently selected for upload';
+          preview.appendChild(para);
+
+        } else {
+          var list = document.createElement('ol');
+          preview.appendChild(list);
+
+          for(var i = 0; i < curFiles.length; i++) {
+            var listItem = document.createElement('li');
+            var para = document.createElement('p');
+
+            var div = document.createElement('div')
+            div.className = "card-columns";
+            listItem.appendChild(div);
+
+            var div_card = document.createElement('div')
+            div_card.className = "card";
+            div.appendChild(div_card);
+
+            var div_card_body = document.createElement('div')
+            div_card.className = "card-body";
+            div_card.appendChild(div_card_body);
+            div_card.style.align = "3px 3px 3px 3px";
+
+            if(validFileType(curFiles[i])) {
+              para.textContent = 'File name ' + curFiles[i].name + '.';
+              var image = document.createElement('img');
+              image.src = window.URL.createObjectURL(curFiles[i]);
+              image.style.width = "200px";
+              image.style.height = "200px";
+
+              div_card_body.appendChild(image);
+              //div_card_body.appendChild(para);
+
+            } else {
+              para.textContent = 'File name ' + curFiles[i].name + ': Not a valid file type. Update your selection.';
+              div_card_body.appendChild(para);
+            }
+
+            list.appendChild(listItem);
+          }
+        }
+      }
+
+
     </script>
   </body>
 </html>
