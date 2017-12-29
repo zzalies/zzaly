@@ -30,19 +30,33 @@
           <div class="card-body">
            <form>
               <div class="form-group">
+                <br>
+                <p>Selected GIF</p>
+                <div class="row" id="gif_selected"></div>
+                <br>
                 <div class="row">
                     <div class="col-md-3">
                         <input type="title" class="form-control" id="index_title" aria-describedby="titleHelp" placeholder="Enter title">
                     </div>
                     <div class="col-md-7">
                         <div class="form-group">
-                            <input type="text" class="form-control" id="index_text" placeholder="text">
+                            <input type="text" class="form-control" id="index_text" placeholder="text"></input>
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-primary" id="index_btn">Apply</button>
                     </div>
                 </div>
+                <br>
+                <div class="col-md-3">
+                  <div class="input-group input-group-sm">
+                      <span class="input-group-addon" id="sizing-addon2">@gif</span>
+                      <input id="gif-search" type="text" class="form-control" placeholder="gif search" aria-label="Username" aria-describedby="sizing-addon1">  
+                  </div>
+                </div>
+                <br>
+                <div class="row" id="gif-area"></div>
+                <br>
               </div>
             </form>
           </div>
@@ -115,11 +129,68 @@
   </div>
 </body>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <script>
+      var page = document.getElementById("header-index");
+      HeaderTapActive(page);
+
+      function GetGIFList(tag) {
+        var method = "GET";
+        var url = "index/search/" + tag;
+        var callback = function(data) {
+          var dict = JSON.parse(data);
+          ImageInsert(dict["list"]);
+        }
+        var errorback = function(xhr, status, error) {
+          alert("error");
+        }
+        var dict = {type:method,url:url,success:callback,error:errorback};
+        $.ajax(dict);
+      }
+
+      function ImageInsert(url_array) {
+        if (url_array == null) {
+          console.log("none");
+          return;
+        }
+        var image_box = document.getElementById("gif-area");
+        image_box.innerHTML = "";
+        var html_source = "";
+        for (var num in url_array) {
+          html_source += "<img src=\""+url_array[num]+"\" id=\""+url_array[num]+"\" onclick=\"ImageSelect(this)\" width=\"100px\" height=\"100px\">\n";
+        }
+        image_box.innerHTML = html_source;
+      }
+
+      function ImageSelect(id) {
+        document.getElementById("gif_selected").innerHTML += "<img src=\""+id.id+"\" width=\"100px\" height=\"100px\">";
+        document.getElementById("gif-area").innerHTML = "";
+      }
+
+      function PostBoard() {
+        var title = document.getElementById("index_title").value;
+        var body = document.getElementById("index_text").value;
+        var image = document.getElementById("gif_selected").innerHTML;
+        var data = {index_title:title,index_text:body,gif_selected:image};
+        var callback = function(data) {
+          location.reload();
+          alert("success");
+        }
+        var errorback = function(xhr, status, error) {
+          alert("error");
+        }
+        var dict = {type:"POST",url:"index/board",data:data,success:callback,error:errorback};
+        $.ajax(dict);
+      }
+
+      $("#gif-search").keyup(function(e){
+        var search_key = document.getElementById("gif-search").value;
+        if (search_key != "") {
+          GetGIFList(search_key);
+        }
+      })
+
+      $("#index_btn").click(function(e){
+        PostBoard();
+      })
     </script>
 </html>

@@ -3,25 +3,26 @@ from controller import router
 
 ### page ##
 
-
-
-### page ##
 app = Flask(__name__)
-
 
 @app.route('/')
 def root():
     return router.index()
-
 
 @app.route('/index')
 def index():
     return router.index()
 
 
-@app.route('/index/search')
-def search():
-    return router.index_search()
+@app.route('/index/search/<user_name>')
+def search(user_name):
+    return router.index_search(user_name)
+
+
+@app.route('/index/board', methods=['GET', 'POST'])
+def board():
+    if request.method == 'POST':
+        return router.index_board()
 
 
 @app.route('/mypage')
@@ -53,6 +54,12 @@ def zzal_make():
 def page_not_found(e):
     return router.page_not_found()
 
+
+
+## functions
+
+# @app.route('/mypage/zzal/upload')
+# def
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)

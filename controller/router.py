@@ -1,5 +1,5 @@
 from werkzeug.utils import secure_filename
-from flask import render_template, request
+from flask import render_template, request, json
 from models import db
 import os
 import sys
@@ -14,6 +14,18 @@ db.init()
 
 def get_post_list():
     return db.get_post()
+
+
+from flask import render_template, json, request, redirect
+
+
+class zzal:
+    creator = "me"
+    url = "https://media.giphy.com/media/l0MYyDa8S9ghzNebm/giphy.gif"
+    tag = "twice"
+
+
+zzal_list = [zzal, zzal, zzal]
 
 
 def index():
@@ -85,13 +97,18 @@ def my_page_zzal_upload_get():
     return render_template("upload.html")
 
 
-def index_search():
-    key = request.args.get('tag')
-    return db.get_post_by_tag(key)
+def index_search(user_name):
+    image = db.get_post_by_tag(user_name)
+    image_list=bytemap_to_stringmap(image)
+    str_list=list()
+    for item in image_list.values():
+        str_list.append(item)
+    json_data = { "list": str_list }
+    return json.dumps(json_data)
 
 
 def zzal_make_get():
-    return render_template("make.html")
+    return render_template("create.html")
 
 
 def zzal_make_post():
@@ -114,6 +131,22 @@ def page_not_found():
 def create_article():
     title = request.form("index_title")
     content = request.form("index_text")
-    db.reg_post(title, content)
+    image = request.form("gif-selected")
+    db.reg_post(title, content, image)
     return "ok"
 
+def get_article():
+    return db.get_post()
+
+'''
+def index_search(user_name):
+    json_data = { 'list': ['static/upload_image/jeny.gif', 'static/upload_image/jisoo.gif', 'static/upload_image/sana.gif']}
+    return json.dumps(json_data)
+'''
+
+def index_board():
+    title = request.form.get("index_title")
+    content = request.form.get("index_text")
+    image = request.form.get("gif_selected")
+    db.reg_post(title, content, image)
+    return "ok"

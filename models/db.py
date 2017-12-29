@@ -43,7 +43,7 @@ def get_post_by_user(user_id):
 
 def get_post_by_tag(tag):
     # 태그별 게시물 가져오기
-    return rds.hkeys("tag/"+tag)
+    return rds.hgetall("tag/"+tag)
 
 
 def get_image_metadata(title):
@@ -61,16 +61,22 @@ def like_up(title):
     return
 
 
-def reg_post(title, content):
-    rds.hset("post", title, content)
+def reg_post(title, content, image):
+    rds.hset("post/"+title, "body", content)
+    rds.hset("post/"+title, "image", image)
     return
 
 def get_post():
-    return rds.hgetall("post")
+    post_list = rds.keys("post/*")
+    result = list()
+    for item in post_list:
+        result.append(rds.hgetall(item.decode('utf-8')))
+    return result
 
 
 if __name__ == '__main__':
     init()
-    reg_image("user_id","tag", "url", "happy", "desc")
-
-    print(get_post_by_user('happy'))
+    # reg_image("user_id","tag", "url", "happy", "desc")
+    #
+    # print(get_post_by_user('happy'))
+    print(get_post())
