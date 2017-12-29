@@ -145,6 +145,8 @@ def index_search(user_name):
 '''
 
 def index_board():
-    body = request.form['body']
-    image = request.form['image']
+    title = request.form.get("index_title")
+    content = request.form.get("index_text")
+    image = request.form.get("gif_selected")
+    db.reg_post(title, content, image)
     return "ok"

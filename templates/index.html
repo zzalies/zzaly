@@ -32,7 +32,7 @@
               <div class="form-group">
                 <br>
                 <p>Selected GIF</p>
-                <div class="row" id="gif-selected"></div>
+                <div class="row" id="gif_selected"></div>
                 <br>
                 <div class="row">
                     <div class="col-md-3">
@@ -162,15 +162,15 @@
       }
 
       function ImageSelect(id) {
-        document.getElementById("gif-selected").innerHTML += "<img src=\""+id.id+"\" width=\"100px\" height=\"100px\">";
+        document.getElementById("gif_selected").innerHTML += "<img src=\""+id.id+"\" width=\"100px\" height=\"100px\">";
         document.getElementById("gif-area").innerHTML = "";
       }
 
       function PostBoard() {
         var title = document.getElementById("index_title").value;
         var body = document.getElementById("index_text").value;
-        var image = document.getElementById("gif-selected").innerHTML;
-        var data = {title:title,body:body,image:image};
+        var image = document.getElementById("gif_selected").innerHTML;
+        var data = {index_title:title,index_text:body,gif_selected:image};
         var callback = function(data) {
           location.reload();
           alert("success");
