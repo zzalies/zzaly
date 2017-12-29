@@ -61,9 +61,9 @@ def like_up(title):
     return
 
 
-def reg_post(title, content, image):
-    rds.hset("post/"+title, "body", content)
-    rds.hset("post/"+title, "title", title)
+def reg_post(key,title, content, image):
+    rds.hset("post/"+key, "body", content)
+    rds.hset("post/"+key, "title", title)
     if image is "" :
         box = "null"
     else:
@@ -84,7 +84,7 @@ def reg_post(title, content, image):
         box = box[3:-1]
         box = box.strip()
         print(box)
-    rds.hset("post/" + title, "image",box)
+    rds.hset("post/" + key, "image",box)
     return
 
 def get_post():
@@ -94,6 +94,10 @@ def get_post():
         result.append(rds.hgetall(item.decode('utf-8')))
     return result
 
+def keycheck(pat):
+    if len(rds.keys(pat)) == 0 :
+        return 0
+    return 1
 
 if __name__ == '__main__':
     init()
@@ -118,3 +122,4 @@ if __name__ == '__main__':
     #
     #
     # print(new_list)
+    keycheck("post/*")

@@ -129,10 +129,18 @@ def page_not_found():
 
 
 def create_article():
-    title = request.form("index_title")
+    num = 1
+    key_title = request.form("index_title")
+    title = key_title
     content = request.form("index_text")
     image = request.form("gif-selected")
-    db.reg_post(title, content, image)
+    while(1) :
+        if db.keycheck(key_title) == 0 :
+            key_title = key_title+"_ayoungcustom"+str(num)
+            break
+        num+=1
+    db.reg_post(key_title,title,content, image)
+
     return "ok"
 
 
@@ -155,6 +163,8 @@ def index_board():
     title = request.form.get("index_title")
     content = request.form.get("index_text")
     image = request.form.get("gif_selected")
+    if image == None:
+        image=""
     db.reg_post(title, content, image)
     return "ok"
 
