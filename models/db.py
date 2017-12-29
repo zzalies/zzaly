@@ -61,12 +61,13 @@ def like_up(title):
     return
 
 
-def reg_post(title, content):
-    rds.hset("post", title, content)
+def reg_post(title, content, image):
+    rds.hset(title, "body", content)
+    rds.hset(title, "image", image)
     return
 
-def get_post():
-    return rds.hgetall("post")
+def get_post(title):
+    return rds.hgetall(title)
 
 
 if __name__ == '__main__':
