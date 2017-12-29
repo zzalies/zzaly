@@ -30,7 +30,6 @@
           <div class="card-body">
            <form>
               <div class="form-group">
-                <br>
                 <p>Selected GIF</p>
                 <div class="row" id="gif_selected"></div>
                 <br>
@@ -47,16 +46,7 @@
                         <button type="button" class="btn btn-primary" id="index_btn">Apply</button>
                     </div>
                 </div>
-                <br>
-                <div class="col-md-3">
-                  <div class="input-group input-group-sm">
-                      <span class="input-group-addon" id="sizing-addon2">@gif</span>
-                      <input id="gif-search" type="text" class="form-control" placeholder="gif search" aria-label="Username" aria-describedby="sizing-addon1">  
-                  </div>
-                </div>
-                <br>
                 <div class="row" id="gif-area"></div>
-                <br>
               </div>
             </form>
           </div>
@@ -127,6 +117,10 @@
       </div>
     </div>
   </div>
+
+  <div id="dialog" title="Basic dialog">
+      <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+  </div>
 </body>
 
     <script>
@@ -156,18 +150,26 @@
         image_box.innerHTML = "";
         var html_source = "";
         for (var num in url_array) {
-          html_source += "<img src=\""+url_array[num]+"\" id=\""+url_array[num]+"\" onclick=\"ImageSelect(this)\" width=\"100px\" height=\"100px\">\n";
+          html_source += "<br><img src=\""+url_array[num]+"\" id=\""+url_array[num]+"\" onclick=\"ImageSelect(this)\" width=\"100px\" height=\"100px\"><br>\n";
         }
         image_box.innerHTML = html_source;
       }
 
+      var key = ""
+
       function ImageSelect(id) {
         document.getElementById("gif_selected").innerHTML += "<img src=\""+id.id+"\" width=\"100px\" height=\"100px\">";
         document.getElementById("gif-area").innerHTML = "";
+        var body = document.getElementById("index_text").value
+        document.getElementById("index_text").value = body.replace("@gif "+key," ");
       }
 
       function PostBoard() {
         var title = document.getElementById("index_title").value;
+        if (title == "") {
+          alert("Typing title")
+          return;
+        }
         var body = document.getElementById("index_text").value;
         var image = document.getElementById("gif_selected").innerHTML;
         var data = {index_title:title,index_text:body,gif_selected:image};
@@ -182,15 +184,18 @@
         $.ajax(dict);
       }
 
-      $("#gif-search").keyup(function(e){
-        var search_key = document.getElementById("gif-search").value;
-        if (search_key != "") {
-          GetGIFList(search_key);
-        }
-      })
-
       $("#index_btn").click(function(e){
         PostBoard();
+      })
+      
+      $("#index_text").keyup(function(e){
+        var body = document.getElementById("index_text").value;
+        var offset = body.lastIndexOf("@gif ");
+        if (offset != -1) {
+          key = body.slice(offset+5);
+          if (key == "") return;
+          GetGIFList(key);
+        }
       })
     </script>
 </html>
