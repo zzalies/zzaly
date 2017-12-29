@@ -29,7 +29,7 @@ zzal_list = [zzal, zzal, zzal]
 
 
 def index():
-    return render_template("index.html", zzal_list=get_post_list())
+    return render_template("index.html", article_list=get_article())
 
 
 def bytemap_to_stringmap(bytemap):
@@ -135,8 +135,15 @@ def create_article():
     db.reg_post(title, content, image)
     return "ok"
 
+
 def get_article():
-    return db.get_post()
+    post_list =  db.get_post()
+    result = list()
+    for item in post_list:
+        result.append(bytemap_to_stringmap(item))
+    print(result)
+    return result
+
 
 '''
 def index_search(user_name):
@@ -150,3 +157,7 @@ def index_board():
     image = request.form.get("gif_selected")
     db.reg_post(title, content, image)
     return "ok"
+
+
+if __name__ == '__main__':
+    get_article()

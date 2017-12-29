@@ -30,7 +30,6 @@
           <div class="card-body">
            <form>
               <div class="form-group">
-                <br>
                 <p>Selected GIF</p>
                 <div class="row" id="gif_selected"></div>
                 <br>
@@ -47,29 +46,22 @@
                         <button type="button" class="btn btn-primary" id="index_btn">Apply</button>
                     </div>
                 </div>
-                <br>
-                <div class="col-md-3">
-                  <div class="input-group input-group-sm">
-                      <span class="input-group-addon" id="sizing-addon2">@gif</span>
-                      <input id="gif-search" type="text" class="form-control" placeholder="gif search" aria-label="Username" aria-describedby="sizing-addon1">  
-                  </div>
-                </div>
-                <br>
                 <div class="row" id="gif-area"></div>
-                <br>
               </div>
             </form>
           </div>
       </div>
-
+<!--todo: add tag-->
     <div class="card-columns">
+        {% for article in article_list%}
       <div class="card">
-        <img class="card-img-top" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22230%22%20height%3D%22160%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20230%20160%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1609bf275b2%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A12pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1609bf275b2%22%3E%3Crect%20width%3D%22230%22%20height%3D%22160%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2284.3046875%22%20y%3D%2285.55%22%3E230x160%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Card image cap">
+        <img class="card-img-top" src="{{article.image}}" alt="Card image cap">
         <div class="card-body">
-          <h4 class="card-title">Card title that wraps to a new line</h4>
-          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+          <h4 class="card-title">{{article.title}}</h4>
+          <p class="card-text">{{ article.body}}</p>
         </div>
       </div>
+        {% endfor %}
       <div class="card p-3">
         <blockquote class="blockquote mb-0 card-body">
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
@@ -156,18 +148,26 @@
         image_box.innerHTML = "";
         var html_source = "";
         for (var num in url_array) {
-          html_source += "<img src=\""+url_array[num]+"\" id=\""+url_array[num]+"\" onclick=\"ImageSelect(this)\" width=\"100px\" height=\"100px\">\n";
+          html_source += "<br><img src=\""+url_array[num]+"\" id=\""+url_array[num]+"\" onclick=\"ImageSelect(this)\" width=\"100px\" height=\"100px\"><br>\n";
         }
         image_box.innerHTML = html_source;
       }
 
+      var key = ""
+
       function ImageSelect(id) {
         document.getElementById("gif_selected").innerHTML += "<img src=\""+id.id+"\" width=\"100px\" height=\"100px\">";
         document.getElementById("gif-area").innerHTML = "";
+        var body = document.getElementById("index_text").value
+        document.getElementById("index_text").value = body.replace("@gif "+key," ");
       }
 
       function PostBoard() {
         var title = document.getElementById("index_title").value;
+        if (title == "") {
+          alert("Typing title")
+          return;
+        }
         var body = document.getElementById("index_text").value;
         var image = document.getElementById("gif_selected").innerHTML;
         var data = {index_title:title,index_text:body,gif_selected:image};
@@ -182,15 +182,18 @@
         $.ajax(dict);
       }
 
-      $("#gif-search").keyup(function(e){
-        var search_key = document.getElementById("gif-search").value;
-        if (search_key != "") {
-          GetGIFList(search_key);
-        }
-      })
-
       $("#index_btn").click(function(e){
         PostBoard();
+      })
+      
+      $("#index_text").keyup(function(e){
+        var body = document.getElementById("index_text").value;
+        var offset = body.lastIndexOf("@gif ");
+        if (offset != -1) {
+          key = body.slice(offset+5);
+          if (key == "") return;
+          GetGIFList(key);
+        }
       })
     </script>
 </html>
