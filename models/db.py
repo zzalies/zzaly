@@ -64,24 +64,26 @@ def like_up(title):
 def reg_post(title, content, image):
     rds.hset("post/"+title, "body", content)
     rds.hset("post/"+title, "title", title)
-    print(image)
-    split_list = image.split("<img src=")
-    print(split_list)
-    new_list = list()
-    # for item in split_list:
-    #     if item.find("src") is not -1:
-    #         temp = item.split(",", 1)
-    #         # new_list.append(temp[0])
-            # for i in box:
-            #     if i.find("'") is not -1 or i.find('"') is not -1:
-    box = split_list[1].split("=",1)
-    box = box[0].split(" ",1)
-    box = box[0].replace('"', " ")
-    box = box.replace("'", " ")
-    box = box[3:-1]
-    box = box.strip()
-    print(box)
-
+    if image is "" :
+        box = "null"
+    else:
+        print(image)
+        split_list = image.split("<img src=")
+        print(split_list)
+        new_list = list()
+        # for item in split_list:
+        #     if item.find("src") is not -1:
+        #         temp = item.split(",", 1)
+        #         # new_list.append(temp[0])
+                # for i in box:
+                #     if i.find("'") is not -1 or i.find('"') is not -1:
+        box = split_list[1].split("=",1)
+        box = box[0].split(" ",1)
+        box = box[0].replace('"', " ")
+        box = box.replace("'", " ")
+        box = box[3:-1]
+        box = box.strip()
+        print(box)
     rds.hset("post/" + title, "image",box)
     return
 
