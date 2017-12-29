@@ -62,16 +62,21 @@ def like_up(title):
 
 
 def reg_post(title, content, image):
-    rds.hset(title, "body", content)
-    rds.hset(title, "image", image)
+    rds.hset("post/"+title, "body", content)
+    rds.hset("post/"+title, "image", image)
     return
 
-def get_post(title):
-    return rds.hgetall(title)
+def get_post():
+    post_list = rds.keys("post/*")
+    result = list()
+    for item in post_list:
+        result.append(rds.hgetall(item.decode('utf-8')))
+    return result
 
 
 if __name__ == '__main__':
     init()
-    reg_image("user_id","tag", "url", "happy", "desc")
-
-    print(get_post_by_user('happy'))
+    # reg_image("user_id","tag", "url", "happy", "desc")
+    #
+    # print(get_post_by_user('happy'))
+    print(get_post())

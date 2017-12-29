@@ -136,8 +136,7 @@ def create_article():
     return "ok"
 
 def get_article():
-    title = request.form("index_title")
-    return db.get_post(title)
+    return db.get_post()
 
 '''
 def index_search(user_name):
