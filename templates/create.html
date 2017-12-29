@@ -15,19 +15,34 @@
       <div class="container">
         <div class="card text-center" style="margin-top: 30px; margin-bottom: 30px">
           <div class="card-header">
-            Create Page
             <ul class="nav nav-tabs card-header-tabs">
-              <li class="nav-item">
-                <a class="nav-link active" href="#">FILE</a>
+              <li class="nav-item" >
+                <a class="nav-link active" id="file_tab" onclick="onClickFileTab()" href="#">FILE</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">URL</a>
+              <li class="nav-item" >
+                <a class="nav-link" id="url_tab" onclick="onClickUrlTab()" href="#">URL</a>
               </li>
             </ul>
+          </div>
 
-            <ul class="list-group list-group-flush">
-              <!--
-              <div class="card-body">
+          <div class="card-body" id="file_view">
+              <form action="/mypage/zzal/make" method="POST" enctype = "multipart/form-data">
+                <h5 class="card-title">Making GIF</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+
+                <span class="btn btn-default btn-file">
+                  <input type="file" class="form-control-file is-invalid" name="upload_image" accept=".jpg, .jpeg, .png, .gif" multiple>
+                </span>
+                <button class="btn btn-primary">MAKE</button>
+              </form>
+
+              <br/> <br/>
+
+              <div id="preview">
+              </div>
+            </div>
+
+            <div class="card-body" id="url_view" style="display: none;">
                 <h5 class="card-title">Making GIF</h5>
                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                 <div class="row">
@@ -38,25 +53,8 @@
                     <button type="button" class="btn btn-primary" id="url_button">IMG Add</button>
                   </div>
                 </div>
-                -->
-              <div class="card-body">
-                <h5 class="card-title">Making GIF</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
 
-                <div class="card" align="center">
-                  <form action="/mypage/zzal/make" method="POST" enctype = "multipart/form-data">
-                    <input type="file" class="form-control-file is-invalid" name="upload_image" accept=".jpg, .jpeg, .png, .gif" multiple>
-                    <button class="btn btn-primary">MAKE</button>
-                  </form>
-                </div>
-
-                <br/> <br/>
-
-                <div id="preview">
-                </div>
-              </div>
-            </ul>
-          </div>
         </div>
 
     <!-- Optional JavaScript -->
@@ -66,6 +64,28 @@
       HeaderTapActive(page);
 
       var url_list = []
+
+      var file_tab = document.getElementById('file_tab');
+      var file_view = document.getElementById('file_view');
+      var url_tab = document.getElementById('url_tab');
+      var url_view = document.getElementById('url_view');
+
+      function onClickFileTab() {
+        file_view.style.display = "block";
+        file_tab.className = "nav-link active";
+
+        url_view.style.display = "none";
+        url_tab.className = "nav-link";
+      }
+
+      function onClickUrlTab() {
+        file_view.style.display = "none";
+        file_tab.className = "nav-link";
+
+        url_view.style.display = "block";
+        url_tab.className = "nav-link active";
+      }
+
 
       var input = document.querySelector('input');
       var preview = document.getElementById('preview');
@@ -90,9 +110,9 @@
       }
 
       function updateImageDisplay() {
-        while(preview.firstChild) {
-          preview.removeChild(preview.firstChild);
-        }
+        //while(preview.firstChild) {
+          //preview.removeChild(preview.firstChild);
+        //}
 
         var curFiles = input.files;
         if(curFiles.length === 0) {
@@ -119,7 +139,6 @@
             var div_card_body = document.createElement('div')
             div_card.className = "card-body";
             div_card.appendChild(div_card_body);
-            div_card.style.align = "3px 3px 3px 3px";
 
             if(validFileType(curFiles[i])) {
               para.textContent = 'File name ' + curFiles[i].name + '.';
@@ -127,6 +146,7 @@
               image.src = window.URL.createObjectURL(curFiles[i]);
               image.style.width = "200px";
               image.style.height = "200px";
+              image.style.paddingBottom = "20px";
 
               div_card_body.appendChild(image);
               //div_card_body.appendChild(para);
