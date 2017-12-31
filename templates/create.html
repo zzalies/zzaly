@@ -15,6 +15,9 @@
       <div class="container">
         <div class="card text-center" style="margin-top: 30px; margin-bottom: 30px">
           <div class="card-header">
+            <p>Title</p>
+            <input type="text" class="form-control" id="gif_title" placeholder="title"></input>
+            <p></p>
             <ul class="nav nav-tabs card-header-tabs">
               <li class="nav-item" >
                 <a class="nav-link active" id="file_tab" onclick="onClickFileTab()" href="#">FILE</a>
@@ -28,8 +31,6 @@
           <div class="card-body" id="file_view">
               <form action="/mypage/zzal/make" method="POST" enctype = "multipart/form-data">
                 <h5 class="card-title">Making GIF</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-
                 <span class="btn btn-default btn-file">
                   <input type="file" class="form-control-file is-invalid" name="upload_image" accept=".jpg, .jpeg, .png, .gif" multiple>
                 </span>
@@ -44,15 +45,19 @@
 
             <div class="card-body" id="url_view" style="display: none;">
                 <h5 class="card-title">Making GIF</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                 <div class="row">
-                  <div class="col-md-7">
+                  <div class="col-md-6">
                     <input type="text" class="form-control" id="url_input" placeholder="image url"></input>
                   </div>
-                  <div class="col-md-3">
-                    <button type="button" class="btn btn-primary" id="url_button">IMG Add</button>
+                  <div class="col-md-2">
+                    <button type="button" class="btn btn-primary" id="url_button" onclick="onClickImageButton()" >IMG Add</button>
                   </div>
+                  <div class="col-md-3">
+                    <button type="button" class="btn btn-primary" id="url_list_submt" onclick="onClickImageListSubmit()">Make</button>
+                  </div>
+                  <div id="image_list"></div>
                 </div>
+                
             </div>
 
         </div>
@@ -161,7 +166,49 @@
         }
       }
 
+      function onClickImageButton() {
+        var image_list = document.getElementById("image_list");
+        var url = document.getElementById("url_input").value;
+        var image_src = "<img src=\"" + url + "\">"
+        image_list.innerHTML += image_src;
+        document.getElementById("url_input").value = "";
+        url_list.push(url)
+        console.log(url_list)
+      }
 
+      function onClickImageListSubmit() {
+        showLoading();
+        var title = document.getElementById("gif_title").value;
+        if (title == "") {
+          alert("Please check title");
+          return;
+        }
+        var list = JSON.stringify(url_list)
+        var data = {gif_title:title,url_list:list};
+        var callback = function(data) {
+          var image_list = document.getElementById("image_list");
+          var source = getimgsrc(data);
+          image_list.innerHTML = source;
+        }
+        var errorback = function(xhr, status, error) {
+          alert("error");
+        }
+        var dict = {type:"POST",url:"/mypage/zzal/make",data:data,success:callback,error:errorback};
+        $.ajax(dict);
+      }
+
+      function showLoading() {
+        var url = "https://i.imgur.com/TZcL7Cc.gif";
+        var source = getimgsrc(url);
+        var image_list = document.getElementById("image_list");
+        console.log(source);
+        image_list.innerHTML = source;
+      }
+
+      function getimgsrc(url) {
+        var str = "<img src=\"" + url + "\">";
+        return str;
+      }
     </script>
   </body>
 </html>
