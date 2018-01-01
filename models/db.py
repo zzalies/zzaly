@@ -67,7 +67,7 @@ def reg_post(title, content, image):
     key = str(key)
     rds.hset("post/"+key, "body", content)
     rds.hset("post/"+key, "title", title)
-    if image is "none" :
+    if image is "none" or image is "":
         box = "null"
     else:
         print(image)
