@@ -16,10 +16,16 @@ class ConvGIF:
 
     def SetURL(self,url):
         file = io.BytesIO(ur.urlopen(url).read())
-        img = numpy.asarray(Image.open(file))
+        img = numpy.asarray(Image.open(file).resize((250,250)))
         self.images.append(img)
 
     def SetFile(self,file):
         f = io.BytesIO(file)
-        img = numpy.asarray(Image.open(f))
+        img = numpy.asarray(Image.open(f).resize((250,250)))
         self.images.append(img)
+
+    def SetURLVideo(self,url):
+        pass
+
+    def ConvertVideo(self):
+        pass

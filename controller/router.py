@@ -143,6 +143,22 @@ def zzal_make_post():
     db.reg_image(USER_ID, gif_tag, path, gif_title, 'user make', 0 ,0 )
     return path
 
+
+def zzal_make_video_post():
+    gif_title = request.form.get('gif_title')
+    gif_tag = request.form.get('gif_tag')
+    path = request.form.get('video_path')
+    start_min = requset.form.get('start_min')
+    start_sec = request.fomr.get('start_sec')
+    end_min = request.form.get('end_min')
+    end_sec = request.form.get('end_sec')
+
+    return 'ok'
+
+def zzal_make_video_reg():
+    yurl = request.form.get('youtube')
+    reponse = {length:'4.20'}
+    return response
     
 def page_not_found():
     return render_template('404.html'), 404

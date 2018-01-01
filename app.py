@@ -51,6 +51,10 @@ def zzal_make():
         return router.zzal_make_post()
 
 
+@app.route('/mypage/zzal/make/video', methods=['POST'])
+def zzal_video_make():
+    return router.zzal_make_video_post()
+
 
 @app.errorhandler(404)
 def page_not_found(e):
