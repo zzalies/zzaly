@@ -12,7 +12,7 @@ SERVER_HOST = 'http://10.100.103.165:8080'
 UPLOAD_FOLDER = 'static/upload_image'
 USER_ID = "lovely_zzaly"
 
-if os.environ
+
 
 db.init()
 
@@ -83,14 +83,12 @@ def my_page_zzal_upload_post():
         if f and allowed_file(f.filename):
             f.save(os.path.join(get_root_path.get_root_path()+"/static/upload_image/", f.filename))
             print("성공")
+            url = "./static/upload_image/" + f.filename
+            db.reg_image(user_id, tag, url, title, desc, 0, 0)
+            return 'ok'
     except Exception as e:
         print(str(e))
         return 'fail'
-
-
-    url = "./static/upload_image/"+f.filename
-    db.reg_image(user_id, tag, url, title, desc, 0 ,0 )
-    return 'ok'
 
 
 def my_page_zzal_upload_get():
