@@ -44,9 +44,6 @@
               <button class="btn btn-primary" id="file_submit" onclick="onClickFileSubmit()">MAKE</button>
 
               <br/> <br/>
-
-              <div id="preview">
-              </div>
             </div>
 
             <div class="card-body" id="url_view" style="display: none;">
@@ -69,23 +66,12 @@
 {#          #}
 {#          {% endfor %}#}
 
-          <div class="card-group">
+          <div class="card-group" id="preview">
               <div class="card">
                 <img class="card-img-top" src="/static/image/twice_image1.jpg" alt="Card image cap">
               </div>
-              <div class="card">
-                <img class="card-img-top" src="/static/image/twice_image1.jpg" alt="Card image cap">
-              </div>
-              <div class="card">
-                <img class="card-img-top" src="/static/image/twice_image1.jpg" alt="Card image cap">
-              </div>
-              <div class="card">
-                <img class="card-img-top" src="/static/image/twice_image1.jpg" alt="Card image cap">
-              </div>
-              <div class="card">
-                <img class="card-img-top" src="/static/image/twice_image1.jpg" alt="Card image cap">
-              </div>
-            </div>
+          </div>
+
         </div>
 
     <!-- Optional JavaScript -->
@@ -136,33 +122,17 @@
           preview.appendChild(para);
 
         } else {
-          var list = document.createElement('ol');
-          preview.appendChild(list);
-
           for(var i = 0; i < curFiles.length; i++) {
-            var listItem = document.createElement('li');
-
-            var div = document.createElement('div')
-            div.className = "card-columns";
-            listItem.appendChild(div);
-
-            var div_card = document.createElement('div')
-            div_card.className = "card";
-            div.appendChild(div_card);
-
-            var div_card_body = document.createElement('div')
-            div_card.className = "card-body";
-            div_card.appendChild(div_card_body);
+            var card = document.createElement('div');
+            preview.appendChild(card);
+            card.className = "card";
 
             var image = document.createElement('img');
+            image.className = "card-img-top";
             image.src = window.URL.createObjectURL(curFiles[i]);
-            image.style.width = "200px";
-            image.style.height = "200px";
-            image.style.paddingBottom = "20px";
+            image.alt = "Card image cap";
 
-            div_card_body.appendChild(image);
-
-            list.appendChild(listItem);
+            card.appendChild(image);
 
             file_list.push(curFiles[i]);
           }
