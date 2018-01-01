@@ -128,6 +128,7 @@
         var body = document.getElementById("index_text").value;
         var image = document.getElementById("gif_selected").innerHTML;
         var data = {index_title:title,index_text:body,gif_selected:image};
+        console.log(data)
         var callback = function(data) {
           location.reload();
           alert("success");

@@ -24,6 +24,8 @@
               <input type="text" class="form-control" id="gif_title" placeholder="title"></input>
               <p>Tag</p>
               <input type="text" class="form-control" id="gif_tag" placeholder="tag"></input>
+              <p>Duration</p>
+              <input type="text" class="form-control" id="duration" placeholder="duration"></input>
             <p></p>
             <ul class="nav nav-tabs card-header-tabs">
               <li class="nav-item" >
@@ -66,11 +68,7 @@
 {#          #}
 {#          {% endfor %}#}
 
-          <div class="card-group" id="preview">
-              <div class="card">
-                <img class="card-img-top" src="/static/image/twice_image1.jpg" alt="Card image cap">
-              </div>
-          </div>
+          <div class="card-group" id="preview"></div>
 
         </div>
 
@@ -107,6 +105,8 @@
 
       var input = document.getElementById('upload_image');
       var preview = document.getElementById('preview');
+      var card = document.createElement('div');
+      card.className = "card-group";
 
       input.addEventListener('change', updateImageDisplay);
 
@@ -116,23 +116,30 @@
         //}
 
         var curFiles = input.files;
+        preview.appendChild(card);
         if(curFiles.length === 0) {
           var para = document.createElement('p');
           para.textContent = 'No files currently selected for upload';
           preview.appendChild(para);
-
         } else {
-          for(var i = 0; i < curFiles.length; i++) {
-            var card = document.createElement('div');
-            preview.appendChild(card);
-            card.className = "card";
+          for(var i = 0; i < (curFiles.length); i++) {
+            var child = document.createElement('div');
+            if (((file_list.length + i) % 4) == 0) {
+              card = document.createElement('div');
+              card.className = "card-group";
+              preview.appendChild(card);
+            } 
+            
+            card.appendChild(child);
+            child.className = "card";
+            
 
             var image = document.createElement('img');
             image.className = "card-img-top";
             image.src = window.URL.createObjectURL(curFiles[i]);
             image.alt = "Card image cap";
 
-            card.appendChild(image);
+            child.appendChild(image);
 
             file_list.push(curFiles[i]);
           }
@@ -141,6 +148,9 @@
 
       function onClickFileSubmit() {
         var title = document.getElementById("gif_title").value;
+        var tag = document.getElementById("gif_tag").value;
+        var duration = document.getElementById("duration").value;
+        var seq_list = [];
         if (title == "") {
           alert("Please check title");
           return;
@@ -150,15 +160,26 @@
         for (var i = 0; i < file_list.length; i++) {
           var file = file_list[i];
           form_data.append("upload_image", file, file.name);
+          seq_list.push("file")
         }
 
-        form_data.append("title", title);
+        form_data.append("gif_title", title);
+        form_data.append("gif_tag",tag);
+        form_data.append("seq_list",JSON.stringify(seq_list));
+        form_data.append("duration",duration);
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', "/mypage/zzal/make", true);
         xhr.onload = function () {
           if (xhr.status === 200) {
             // File(s) uploaded.
+            console.log(xhr)
+            preview.innerHTML = ""
+            var image = document.createElement('img');
+            image.className = "card-img-top";
+            image.src = xhr.response;
+            image.alt = "Card image cap";
+            preview.appendChild(image);
             alert('ok');
           } else {
             alert('An error occurred!');
@@ -166,6 +187,7 @@
         };
 
         xhr.send(form_data);
+        showLoading();
       }
 
       function onClickImageButton() {
@@ -181,12 +203,19 @@
       function onClickImageListSubmit() {
         showLoading();
         var title = document.getElementById("gif_title").value;
+        var tag = document.getElementById("gif_tag").value;
+        var duration = document.getElementById("duration").value;
         if (title == "") {
           alert("Please check title");
           return;
         }
-        var list = JSON.stringify(url_list)
-        var data = {gif_title:title,url_list:list};
+        var seq_list = [];
+        for (var i=0; i<url_list.length;i++) {
+          seq_list.push("url");
+        }
+        var list = JSON.stringify(url_list);
+        var seq = JSON.stringify(seq_list);
+        var data = {gif_title:title,url_list:list,gif_title:title,gif_tag:tag,duration:duration,seq_list:seq};
         var callback = function(data) {
           var image_list = document.getElementById("image_list");
           var source = getimgsrc(data);

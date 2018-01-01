@@ -113,7 +113,10 @@ def zzal_make_post():
     gif_title = request.form.get('gif_title')
     gif_tag = request.form.get('gif_tag')
     duration = float(request.form.get('duration')) #float 형변환
-    url_list = json.JSONDecoder().decode(request.form.get('url_list'))
+    ll = request.form.get('url_list')
+    url_list = []
+    if ll != None:
+        url_list = json.JSONDecoder().decode(request.form.get('url_list'))
     file_list = request.files.getlist("upload_image")
     seq_list = json.JSONDecoder().decode(request.form.get('seq_list'))
     

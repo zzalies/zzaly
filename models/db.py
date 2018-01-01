@@ -85,12 +85,13 @@ def reg_post(title, content, image):
         box = box[0].split(" ",1)
         box = box[0].replace('"', " ")
         box = box.replace("'", " ")
-        box = box[3:-1]
+        # box = box[3:-1]
+        # box.split("/",1)
         box = box.strip()
-        print(box)
+        print("================",box)
 
     rds.hset("post/" + key, "image",box)
-    rds.hset("post/"+key, "tima", datetime.datetime.now().isoformat())
+    rds.hset("post/"+key, "time", datetime.datetime.now().isoformat())
     return
 
 def get_post():
