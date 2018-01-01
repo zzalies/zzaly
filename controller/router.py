@@ -4,6 +4,7 @@ from models import db
 import os
 import sys
 from util import convert_gif
+import datetime
 
 SERVER_HOST = 'http://10.100.103.165:8080'
 UPLOAD_FOLDER = 'static/upload_image'
@@ -79,12 +80,13 @@ def my_page_zzal_upload_post():
     user_id = USER_ID
     print(title, tag, desc)
 
-    if f and allowed_file(f.filename):
-        file_name = secure_filename(f.filename)
-        file_path = os.path.join(root_path(), UPLOAD_FOLDER)
+    try:
+        if f and allowed_file(f.filename):
+            file_name = secure_filename(f.filename)
+            file_path = os.path.join(root_path(), UPLOAD_FOLDER)
 
-        f.save(os.path.join(file_path, file_name))
-    else:
+            f.save(os.path.join(file_path, file_name))
+    except :
         return 'fail'
 
 
@@ -191,3 +193,4 @@ def index_board():
 
 if __name__ == '__main__':
     get_article()
+    print(datetime.datetime.now().isoformat())
