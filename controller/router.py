@@ -78,9 +78,7 @@ def my_page_zzal_upload_post():
     try:
         if f and allowed_file(f.filename):
             file_name = secure_filename(f.filename)
-            file_path = os.path.join("static/upload_image/", UPLOAD_FOLDER)
-
-            f.save(os.path.join(file_path, file_name))
+            f.save(os.path.join("static/upload_image/", file_name))
     except :
         return 'fail'
 
