@@ -108,19 +108,39 @@ def zzal_make_get():
 
 
 def zzal_make_post():
-    title = request.form.get('gif_title')
-    print(title)
-
-    url_list = request.form.get('url_list')
-    dec = json.JSONDecoder()
-    ll = dec.decode(url_list)
-    if ll != None :
-        gif = convert_gif.ConvGIF()
-        for url in ll:
-            gif.SetURL(url)
-        return gif.Convert(title,0.1)
+    gif_title = request.form.get('gif_title')
+    gif_tag = request.form.get('gif_tag')
+    duration = float(request.form.get('duration')) #float 형변환
+    url_list = json.JSONDecoder().decode(request.form.get('url_list'))
+    file_list = request.files.getlist("upload_image")
+    seq_list = json.JSONDecoder().decode(request.form.get('seq_list'))
     
-    return 'ok'
+    if gif_title == None and gif_tag == None and duration == None and seq_list == None :
+        return 'parm error' 
+
+    if len(seq_list) != len(url_list) + len(file_list) :
+        print(seq_list)
+        print(url_list)
+        print(file_list)
+        return 'file, url error'
+    
+    print(gif_title,gif_tag,duration,url_list,file_list,seq_list)
+    url_idx = 0
+    file_idx = 0
+    gif = convert_gif.ConvGIF()
+    for seq in seq_list:
+        if seq == 'file':
+            gif.SetFile(file_list[file_idx].stream.read())
+            file_idx += 1
+        elif seq == 'url':
+            gif.SetURL(url_list[url_idx])
+            url_idx += 1
+    path = gif.Convert(gif_title,duration)
+    if path == None :
+        return 'error'
+    # gif_tag 레디스 등록
+    db.reg_image(USER_ID, gif_tag, path, gif_title, 'user make', 0 ,0 )
+    return path
 
     '''
     title = request.form.get('title')
