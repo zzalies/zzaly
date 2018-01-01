@@ -8,6 +8,9 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <style>
+      li { list-style-type : none }
+    </style>
   </head>
   <body>
       {% include 'header.html'%}
@@ -29,13 +32,11 @@
           </div>
 
           <div class="card-body" id="file_view">
-              <form action="/mypage/zzal/make" method="POST" enctype = "multipart/form-data">
-                <h5 class="card-title">Making GIF</h5>
-                <span class="btn btn-default btn-file">
-                  <input type="file" class="form-control-file is-invalid" name="upload_image" accept=".jpg, .jpeg, .png, .gif" multiple>
-                </span>
-                <button class="btn btn-primary">MAKE</button>
-              </form>
+              <h5 class="card-title">Making GIF</h5>
+              <span class="btn btn-default btn-file">
+                <input type="file" class="form-control-file is-invalid" name="upload_image" id="upload_image" accept=".jpg, .jpeg, .png, .gif" multiple>
+              </span>
+              <button class="btn btn-primary" id="file_submit" onclick="onClickFileSubmit()">MAKE</button>
 
               <br/> <br/>
 
@@ -59,7 +60,7 @@
                 </div>
                 
             </div>
-
+          </div>
         </div>
 
     <!-- Optional JavaScript -->
@@ -69,6 +70,7 @@
       HeaderTapActive(page);
 
       var url_list = []
+      var file_list = []
 
       var file_tab = document.getElementById('file_tab');
       var file_view = document.getElementById('file_view');
@@ -92,27 +94,10 @@
       }
 
 
-      var input = document.querySelector('input');
+      var input = document.getElementById('upload_image');
       var preview = document.getElementById('preview');
 
       input.addEventListener('change', updateImageDisplay);
-
-      var fileTypes = [
-        'image/jpeg',
-        'image/pjpeg',
-        'image/png',
-        'image/gif'
-      ]
-
-      function validFileType(file) {
-        for(var i = 0; i < fileTypes.length; i++) {
-          if(file.type === fileTypes[i]) {
-            return true;
-          }
-        }
-
-        return false;
-      }
 
       function updateImageDisplay() {
         //while(preview.firstChild) {
@@ -131,7 +116,6 @@
 
           for(var i = 0; i < curFiles.length; i++) {
             var listItem = document.createElement('li');
-            var para = document.createElement('p');
 
             var div = document.createElement('div')
             div.className = "card-columns";
@@ -145,25 +129,61 @@
             div_card.className = "card-body";
             div_card.appendChild(div_card_body);
 
-            if(validFileType(curFiles[i])) {
-              para.textContent = 'File name ' + curFiles[i].name + '.';
-              var image = document.createElement('img');
-              image.src = window.URL.createObjectURL(curFiles[i]);
-              image.style.width = "200px";
-              image.style.height = "200px";
-              image.style.paddingBottom = "20px";
+            var image = document.createElement('img');
+            image.src = window.URL.createObjectURL(curFiles[i]);
+            image.style.width = "200px";
+            image.style.height = "200px";
+            image.style.paddingBottom = "20px";
 
-              div_card_body.appendChild(image);
-              //div_card_body.appendChild(para);
-
-            } else {
-              para.textContent = 'File name ' + curFiles[i].name + ': Not a valid file type. Update your selection.';
-              div_card_body.appendChild(para);
-            }
+            div_card_body.appendChild(image);
 
             list.appendChild(listItem);
+
+            file_list.push(curFiles[i]);
           }
         }
+      }
+
+      function onClickFileSubmit() {
+        var title = document.getElementById("gif_title").value;
+        if (title == "") {
+          alert("Please check title");
+          return;
+        }
+        //alert(file_list);
+        var form_data = new FormData();
+        for (var i = 0; i < file_list.length; i++) {
+          var file = file_list[i];
+          form_data.append("upload_image", file, file.name);
+        }
+
+        form_data.append("title", title);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', "/mypage/zzal/make", true);
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            // File(s) uploaded.
+            alert('ok');
+          } else {
+            alert('An error occurred!');
+          }
+        };
+
+        xhr.send(form_data);
+
+        /*
+        alert("test!!");
+        var data = {gif_title:title,file_list:file_list.toString};
+        var callback = function(data) {
+          alert("success!" + file_list.length.toString());
+        }
+        var errorback = function(xhr, status, error) {
+          alert("error");
+        }
+        var dict = {type:"POST",url:"/mypage/zzal/make",data:form_data,success:callback,error:errorback};
+        $.ajax(dict);
+        */
       }
 
       function onClickImageButton() {
