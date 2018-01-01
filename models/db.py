@@ -2,6 +2,7 @@ from models import redis_module as rds
 
 def init():
     rds.make_connection()
+    rds.set("postkey",1)
 
 # def reg_user():
 #     # 유저별 이미지 등록
@@ -61,10 +62,12 @@ def like_up(title):
     return
 
 
-def reg_post(key,title, content, image):
+def reg_post(title, content, image):
+    key = rds.incr("postkey",1)
+    key = str(key)
     rds.hset("post/"+key, "body", content)
     rds.hset("post/"+key, "title", title)
-    if image is "" :
+    if image is "none" :
         box = "null"
     else:
         print(image)

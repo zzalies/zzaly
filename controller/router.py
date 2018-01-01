@@ -130,22 +130,29 @@ def page_not_found():
 
 def create_article():
     num = 1
-    key_title = request.form("index_title")
+    key_title = request.form.get("index_title")
     title = key_title
-    content = request.form("index_text")
-    image = request.form("gif-selected")
-    while(1) :
-        if db.keycheck(key_title) == 0 :
-            key_title = key_title+"_ayoungcustom"+str(num)
-            break
-        num+=1
-    db.reg_post(key_title,title,content, image)
+    key_title = "image/"+key_title
+    content = request.form.get("index_text")
+    # while(1) :
+    #     if db.keycheck(key_title) == 0 :
+    #         key_title = key_title+"_ayoungcustom"+str(num)
+    #         print(key_title,num)
+    #         break
+    #     num+=1
+    #
+    # if len(request.form.get("gif_selected")) == 0:
+    #     image = "none"
+    # else:
+    image = request.form.get("gif_selected")
+
+    db.reg_post(title,content, image)
 
     return "ok"
 
 
 def get_article():
-    post_list =  db.get_post()
+    post_list = db.get_post()
     result = list()
     for item in post_list:
         result.append(bytemap_to_stringmap(item))
@@ -162,10 +169,15 @@ def index_search(user_name):
 def index_board():
     title = request.form.get("index_title")
     content = request.form.get("index_text")
-    image = request.form.get("gif_selected")
-    if image == None:
-        image=""
-    db.reg_post(title, content, image)
+
+    image = "none"
+    if len(request.form.get("gif_selected")) == 0:
+        db.reg_post(title, content, "none")
+    else:
+        image = request.form.get("gif_selected")
+        db.reg_post(title, content, image)
+
+
     return "ok"
 
 
