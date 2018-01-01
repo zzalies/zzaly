@@ -3,7 +3,7 @@ from flask import render_template, request, json
 from models import db
 import os
 import sys
-
+from util import convert_gif
 
 SERVER_HOST = 'http://10.100.103.165:8080'
 UPLOAD_FOLDER = 'static/upload_image'
@@ -112,16 +112,24 @@ def zzal_make_get():
 
 
 def zzal_make_post():
-    file_cnt = request.form.get('file_cnt')
-
+    title = request.form.get('gif_title')
+    print(title)
+    url_list = request.form.get('url_list')
+    dec = json.JSONDecoder()
+    ll = dec.decode(url_list)
+    if ll != None :
+        gif = convert_gif.ConvGIF()
+        for url in ll:
+            gif.SetURL(url)
+        return gif.Convert(title,0.1)
+    
+    return 'ok'    
+'''
     for i in range(file_cnt):
         file_name = 'sys_' + str(i)
         f = request.files[file_name]
-        is_file = request.form.get('is_file')
-
-        return 'success'
-    else:
-        return 'fail'
+ '''       
+    
 
 
 def page_not_found():
