@@ -8,6 +8,8 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.min.css">
+
     <style>
       li { list-style-type : none }
     </style>
@@ -19,7 +21,7 @@
         <div class="card text-center" style="margin-top: 30px; margin-bottom: 30px">
           <div class="card-header">
             <p>Title</p>
-            <input type="text" class="form-control" id="gif_title" placeholder="title"></input>
+            <input type="text" class="form-control" id="gif_title" placeholder="title">
             <p></p>
             <ul class="nav nav-tabs card-header-tabs">
               <li class="nav-item" >
@@ -30,6 +32,7 @@
               </li>
             </ul>
           </div>
+
 
           <div class="card-body" id="file_view">
               <h5 class="card-title">Making GIF</h5>
@@ -58,9 +61,34 @@
                   </div>
                   <div id="image_list"></div>
                 </div>
-                
             </div>
           </div>
+{#          {% for foo in  %}#}
+{#          #}
+{#          {% endfor %}#}
+
+          <div class="card-group">
+              <div class="card">
+                <div class="row"><a href="/"><div class="fa fa-times"></div></a>1. twice1.jpg</div>
+                <img class="card-img-top" src="/static/image/twice_image1.jpg" alt="Card image cap">
+              </div>
+              <div class="card">
+                <a href="/"><div class="fa fa-times"></div></a>
+                <img class="card-img-top" src="/static/image/twice_image1.jpg" alt="Card image cap">
+              </div>
+              <div class="card">
+                <a href="/"><div class="fa fa-times"></div></a>
+                <img class="card-img-top" src="/static/image/twice_image1.jpg" alt="Card image cap">
+              </div>
+              <div class="card">
+                <a href="/"><div class="fa fa-times"></div></a>
+                <img class="card-img-top" src="/static/image/twice_image1.jpg" alt="Card image cap">
+              </div>
+              <div class="card">
+                <a href="/"><div class="fa fa-times"></div></a>
+                <img class="card-img-top" src="/static/image/twice_image1.jpg" alt="Card image cap">
+              </div>
+            </div>
         </div>
 
     <!-- Optional JavaScript -->
@@ -171,22 +199,6 @@
         };
 
         xhr.send(form_data);
-<<<<<<< HEAD
-
-        /*
-        alert("test!!");
-        var data = {gif_title:title,file_list:file_list.toString};
-        var callback = function(data) {
-          alert("success!" + file_list.length.toString());
-        }
-        var errorback = function(xhr, status, error) {
-          alert("error");
-        }
-        var dict = {type:"POST",url:"/mypage/zzal/make",data:form_data,success:callback,error:errorback};
-        $.ajax(dict);
-        */
-=======
->>>>>>> ff81f35131637778d1176c66ba7a8d435fa6724a
       }
 
       function onClickImageButton() {
