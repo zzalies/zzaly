@@ -3,12 +3,16 @@ from flask import render_template, request, json
 from models import db
 import os
 import sys
-from util import convert_gif
+from util import convert_gif, get_root_path
+from flask import render_template, json, request, redirect
+
 import datetime
 
 SERVER_HOST = 'http://10.100.103.165:8080'
 UPLOAD_FOLDER = 'static/upload_image'
 USER_ID = "lovely_zzaly"
+
+
 
 db.init()
 
@@ -17,7 +21,6 @@ def get_post_list():
     return db.get_post()
 
 
-from flask import render_template, json, request, redirect
 
 
 class zzal:
@@ -74,20 +77,18 @@ def my_page_zzal_upload_post():
     f = request.files['upload_file']
     user_id = USER_ID
     print(title, tag, desc)
+    print(os.pardir)
 
     try:
         if f and allowed_file(f.filename):
-            file_name = secure_filename(f.filename)
-            file_path = os.path.join("static/upload_image/", UPLOAD_FOLDER)
-
-            f.save(os.path.join(file_path, file_name))
-    except :
+            f.save(os.path.join(get_root_path.get_root_path()+"/static/upload_image/", f.filename))
+            print("성공")
+            url = "./static/upload_image/" + f.filename
+            db.reg_image(user_id, tag, url, title, desc, 0, 0)
+            return 'ok'
+    except Exception as e:
+        print(str(e))
         return 'fail'
-
-
-    url = "./static/upload_image/"+file_name
-    db.reg_image(user_id, tag, url, title, desc, 0 ,0 )
-    return 'ok'
 
 
 def my_page_zzal_upload_get():
@@ -214,3 +215,4 @@ def index_board():
 if __name__ == '__main__':
     get_article()
     print(datetime.datetime.now().isoformat())
+    print(os.path.abspath((os.pardir)))

@@ -36,7 +36,7 @@ def zzal_upload():
         if router.my_page_zzal_upload_post()=='ok':
             return redirect('/mypage')
         else :
-            return 'fail'
+            return redirect('/mypage/zzal/upload')
     elif request.method == 'GET':
         return router.my_page_zzal_upload_get()
 
