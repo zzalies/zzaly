@@ -4,6 +4,7 @@ from models import db
 import os
 import sys
 from util import convert_gif
+import datetime
 
 SERVER_HOST = 'http://10.100.103.165:8080'
 UPLOAD_FOLDER = 'static/upload_image'
@@ -62,11 +63,6 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
-def root_path():
-    fn = getattr(sys.modules['__main__'], '__file__')
-    root_path = os.path.abspath(os.path.dirname(fn))
-    return root_path
-
 def my_page_zzal_upload_post():
     print('1')
     print(request.values.values())
@@ -79,12 +75,13 @@ def my_page_zzal_upload_post():
     user_id = USER_ID
     print(title, tag, desc)
 
-    if f and allowed_file(f.filename):
-        file_name = secure_filename(f.filename)
-        file_path = os.path.join(root_path(), UPLOAD_FOLDER)
+    try:
+        if f and allowed_file(f.filename):
+            file_name = secure_filename(f.filename)
+            file_path = os.path.join("static/upload_image/", UPLOAD_FOLDER)
 
-        f.save(os.path.join(file_path, file_name))
-    else:
+            f.save(os.path.join(file_path, file_name))
+    except :
         return 'fail'
 
 
@@ -112,8 +109,10 @@ def zzal_make_get():
 
 
 def zzal_make_post():
+    '''
     title = request.form.get('gif_title')
     print(title)
+
     url_list = request.form.get('url_list')
     dec = json.JSONDecoder()
     ll = dec.decode(url_list)
@@ -123,12 +122,22 @@ def zzal_make_post():
             gif.SetURL(url)
         return gif.Convert(title,0.1)
     
-    return 'ok'    
+    return 'ok'
+    '''
+
+    title = request.form.get('title')
+    file_list = request.files.getlist("upload_image")
+
+    gif = convert_gif.ConvGIF()
+    for f in file_list:
+        gif.SetFile(f.stream.read())
+    return gif.Convert(title, 0.1)
+
 '''
     for i in range(file_cnt):
         file_name = 'sys_' + str(i)
         f = request.files[file_name]
- '''       
+ '''
     
 
 
@@ -168,12 +177,6 @@ def get_article():
     return result
 
 
-'''
-def index_search(user_name):
-    json_data = { 'list': ['static/upload_image/jeny.gif', 'static/upload_image/jisoo.gif', 'static/upload_image/sana.gif']}
-    return json.dumps(json_data)
-'''
-
 def index_board():
     title = request.form.get("index_title")
     content = request.form.get("index_text")
@@ -191,3 +194,4 @@ def index_board():
 
 if __name__ == '__main__':
     get_article()
+    print(datetime.datetime.now().isoformat())
