@@ -1,4 +1,5 @@
 from models import redis_module as rds
+import datetime
 
 def init():
     rds.make_connection()
@@ -87,7 +88,9 @@ def reg_post(title, content, image):
         box = box[3:-1]
         box = box.strip()
         print(box)
+
     rds.hset("post/" + key, "image",box)
+    rds.hset("post/"+key, "tima", datetime.datetime.now().isoformat())
     return
 
 def get_post():
