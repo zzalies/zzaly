@@ -54,7 +54,7 @@ def my_page():
     zzal_list = list()
     for zzal_byte in zzal_list_byte:
         zzal = bytemap_to_stringmap(zzal_byte)
-        total_count += int(zzal["ref_count"])
+        # total_count += int(zzal["ref_count"])
         zzal_list.append(zzal)
 
     return render_template("mypage.html", zzal_list=zzal_list, total_count=total_count, temp=temp)

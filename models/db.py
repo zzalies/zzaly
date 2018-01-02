@@ -5,6 +5,7 @@ def init():
     rds.make_connection()
     rds.set("postkey",1)
 
+
 # def reg_user():
 #     # 유저별 이미지 등록
 #     pass
@@ -30,16 +31,21 @@ def reg_image(user_id, tag, url, title, desc, ref_count=0, like=0):
 
 
     rds.hset("tag/" + tag, title, url)   #tag별 이미지 리스트 저장
-    rds.hset("user/"+user_id, title, url)  #user_id별 이미지 리스트 저장
+    #rds.hset("user/"+user_id, title, url)  #user_id별 이미지 리스트 저장
+    num = rds.incr("userkey/"+user_id,1)
+    rds.zadd("user_s/"+user_id, title, num)
     return
 
 
 def get_post_by_user(user_id):
     # 유저별 게시물 가져오기
-    keylist = rds.hkeys("user/"+user_id)
+    #userlist = rds.hkeys("user/"+user_id)
+    keylist = rds.zrange("user_s/"+user_id)
     result = list()
     for item in keylist :
         result.append(get_image_metadata(item.decode('utf-8')))
+
+    print(result)
     return result
 
 

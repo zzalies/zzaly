@@ -11,6 +11,9 @@ def make_connection():
 def get(key):
     return rds.get(key)
 
+def delete(key):
+    return rds.delete(key)
+
 def mget(keylist):
     return rds.mget(keylist)
 
@@ -31,8 +34,8 @@ def hincr(name, key, amount=1):
 def hkeys(name):
     return rds.hkeys(name)
 
-def zadd(key, value):
-    return rds.zadd(key, value, 0)
+def zadd(key, value, score):
+    return rds.zadd(key, score, value)
 
 def zrange(key):
     return rds.zrange(key,0,-1)
