@@ -11,7 +11,7 @@ class ConvGIF:
         self.images = []
 
     def Convert(self,gifname, duration):
-        imageio.mimsave('static/upload_image/'+gifname+'.gif',self.images,format='GIF',duration=duration)
+        imageio.mimsave(get_root_path()+'/static/upload_image/'+gifname+'.gif',self.images,format='GIF',duration=duration)
         return '/static/upload_image/' + gifname + '.gif'
 
     def SetURL(self,url):
