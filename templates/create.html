@@ -50,55 +50,77 @@
     </style>
   </head>
   <body>
-      {% include 'header.html'%}
+    {% include 'header.html'%}
 
-      <div class="container">
-        <div class="card text-center" style="margin-top: 30px; margin-bottom: 30px">
-          <div class="card-header">
-              <p>Title</p>
-              <input type="text" class="form-control" id="gif_title" placeholder="title"></input>
-              <p>Tag</p>
-              <input type="text" class="form-control" id="gif_tag" placeholder="tag"></input>
-              <p>Duration: <span id="du_val"></span></p>
-              <input type="range" class="slider" id="du_slider" min="0" max="10" value="0.5" step="0.1"></input>
-            <p></p>
-            <ul class="nav nav-tabs card-header-tabs">
-              <li class="nav-item" >
-                <a class="nav-link active" id="file_tab" onclick="onClickFileTab()" href="#">FILE</a>
-              </li>
-              <li class="nav-item" >
-                <a class="nav-link" id="url_tab" onclick="onClickUrlTab()" href="#">URL</a>
-              </li>
-            </ul>
-          </div>
+    <div class="container">
+      <div class="card text-center" style="margin-top: 30px; margin-bottom: 30px">
+        <div class="card-header">
+          <p>Title</p>
+          <input type="text" class="form-control" id="gif_title" placeholder="title"></input>
+          <p>Tag</p>
+          <input type="text" class="form-control" id="gif_tag" placeholder="tag"></input>
+          <p>Duration: <span id="du_val"></span></p>
+          <input type="range" class="slider" id="du_slider" min="0" max="100" value="0.5" step="0.1"></input>
+          <p></p>
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item" >
+              <a class="nav-link active" id="file_tab" onclick="onClickFileTab()" href="#">FILE</a>
+            </li>
+            <li class="nav-item" >
+              <a class="nav-link" id="url_tab" onclick="onClickUrlTab()" href="#">URL</a>
+            </li>
+            <li class="nav-item" >
+              <a class="nav-link" id="video_tab" onclick="onClickVideoTab()" href="#">Video</a>
+            </li>
+          </ul>
+        </div>
 
+        <div class="card-body" id="file_view">
+          <h5 class="card-title">Making GIF</h5>
+          <span class="btn btn-default btn-file">
+            <input type="file" class="form-control-file is-invalid" name="upload_image" id="upload_image" accept=".jpg, .jpeg, .png, .gif" multiple>
+          </span>
+          <button class="btn btn-primary" id="file_submit" onclick="onClickFileSubmit()">MAKE</button>
+          <br/> <br/>
+        </div>
 
-          <div class="card-body" id="file_view">
-              <h5 class="card-title">Making GIF</h5>
-              <span class="btn btn-default btn-file">
-                <input type="file" class="form-control-file is-invalid" name="upload_image" id="upload_image" accept=".jpg, .jpeg, .png, .gif" multiple>
-              </span>
-              <button class="btn btn-primary" id="file_submit" onclick="onClickFileSubmit()">MAKE</button>
-
-              <br/> <br/>
+        <div class="card-body" id="url_view" style="display: none;">
+          <h5 class="card-title">Making GIF</h5>
+          <div class="row">
+            <div class="col-md-7">
+              <input type="text" class="form-control" id="url_input" placeholder="image url"></input>
             </div>
+            <div class="col-md-2">
+              <button type="button" class="btn btn-primary" id="url_button" onclick="onClickImageButton()" >IMG Add</button>
+            </div>
+            <div class="col-md-3">
+              <button type="button" class="btn btn-primary" id="url_list_submt" onclick="onClickImageListSubmit()">Make</button>
+            </div>
+            <div id="image_list"></div>
+          </div>
+        </div>
 
-            <div class="card-body" id="url_view" style="display: none;">
-                <h5 class="card-title">Making GIF</h5>
-                <div class="row">
-                  <div class="col-md-6">
-                    <input type="text" class="form-control" id="url_input" placeholder="image url"></input>
-                  </div>
-                  <div class="col-md-2">
-                    <button type="button" class="btn btn-primary" id="url_button" onclick="onClickImageButton()" >IMG Add</button>
-                  </div>
-                  <div class="col-md-3">
-                    <button type="button" class="btn btn-primary" id="url_list_submt" onclick="onClickImageListSubmit()">Make</button>
-                  </div>
-                  <div id="image_list"></div>
-                </div>
+        <div class="card-body" id="video_view" style="display: none;">
+          <h5 class="card-title">Making GIF</h5>
+          <p>Repeated <font color="red">[Start at]</font> ~ <font color="blue">[Start at + Duration(sec)]</font>]</p>
+          <div class="row">
+            <div class="col-md-6">
+              <p></p>
+              <input type="text" class="form-control" id="video_input" placeholder="give me youtube vod id"></input>
+            </div>
+            <div class="col-md-6">
+              <p>Start at: <span id="video_start_val"></span></p>
+              <input type="range" class="slider" id="video_start" min="0" max="0" value="0" step="1"></input>
             </div>
           </div>
+          <div id="player"></div>
+          <div>
+              <button type="button" class="btn btn-primary" id="video_submt" onclick="onVideoSubmit()">Make</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
 {#          {% for foo in  %}#}
 {#          #}
 {#          {% endfor %}#}
@@ -115,7 +137,7 @@
 
       var du_slider = document.getElementById("du_slider");
       var du_output = document.getElementById("du_val");
-      du_val.innerHTML = du_slider.value;
+      du_output.innerHTML = du_slider.value;
       du_slider.oninput = function() {
         du_output.innerHTML = this.value;
       }
@@ -125,8 +147,12 @@
 
       var file_tab = document.getElementById('file_tab');
       var file_view = document.getElementById('file_view');
+
       var url_tab = document.getElementById('url_tab');
       var url_view = document.getElementById('url_view');
+
+      var video_tab = document.getElementById('video_tab');
+      var video_view = document.getElementById('video_view');
 
       function onClickFileTab() {
         file_view.style.display = "block";
@@ -134,6 +160,9 @@
 
         url_view.style.display = "none";
         url_tab.className = "nav-link";
+
+        video_view.style.display = "none";
+        video_tab.className = "nav-link";
       }
 
       function onClickUrlTab() {
@@ -142,9 +171,133 @@
 
         url_view.style.display = "block";
         url_tab.className = "nav-link active";
+
+        video_view.style.display = "none";
+        video_tab.className = "nav-link";
       }
 
+      function onClickVideoTab() {
+        file_view.style.display = "none";
+        file_tab.className = "nav-link";
 
+        url_view.style.display = "none";
+        url_tab.className = "nav-link";
+
+        video_view.style.display = "block";
+        video_tab.className = "nav-link active";
+        du_slider.value = "10";
+        du_output.innerHTML = du_slider.value;
+      }
+
+// -------------- 동영상 구간 시작 ------------------------------//
+      var player;
+      var vs_input = document.getElementById("video_input");
+      var vs_slider = document.getElementById("video_start");
+      var vs_val = document.getElementById("video_start_val");
+      vs_val.innerHTML = vs_slider.value;
+      var start_time = 0;
+      var sync = false;
+      var timer;
+      vs_slider.oninput = function() {
+        if (sync) {
+          clearInterval(timer);
+          sync = false;
+        }
+        onSliderUpdate(this.value);
+      }
+
+      function onSliderUpdate(value) {
+        start_time = value;
+        var min = (start_time / 60);
+        var sec = start_time % 60;
+        vs_val.innerHTML =  Math.floor(min)+ 'm' + sec.toFixed(0) + 's';
+        player.seekTo(start_time);
+        LoopCheck();
+      }
+
+      function LoopCheck() {
+        if (!sync) {
+          timer = setInterval(function(){player.seekTo(start_time);if(sync){clearInterval(timer);sync=false;LoopCheck();}}, du_slider.value*1000);
+          sync = true;
+          console.log('타이머 시작');
+        }
+      }
+
+      var url_pattern = ["https://youtu.be/","https://www.youtube.com/watch?v="];
+      
+      vs_input.oninput = function() {
+        var input = this.value;
+        for (x in url_pattern) {
+          if (input.indexOf(url_pattern[x]) != -1){
+            var vod_id = input.replace(url_pattern[x],"");
+            player.loadVideoById(vod_id);
+            LoopCheck();
+            console.log(player);
+            return;
+          }
+        }
+      }
+
+      var tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '360',
+          width: '640',
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange':onPlayerStateChange
+          }
+        });
+      }
+
+      function onPlayerReady(event) {
+        event.target.playVideo();
+      }
+
+      function stopVideo() {
+        console.log("stop");
+        player.stopVideo();
+      }
+
+      function onPlayerStateChange(event) {
+        if (event.data == 1) { // 재생중
+            var playtime = event.target.getDuration();
+            vs_slider.setAttribute('max',playtime);
+            if (!sync) {
+              LoopCheck();
+              sync = true;
+            }
+        } else if (event.data == 2) { //일시 중지
+            vs_slider.value = player.getCurrentTime();
+            onSliderUpdate(vs_slider.value);
+            if (sync) {
+              clearInterval(timer);
+              sync = false;
+              console.log('타이머 중지')
+            }
+            console.log('중지')
+        } else if (event.data == 3) { //버퍼링 중
+            console.log('버퍼링 중')
+        } else if (event.data == -1) { //시작되지 않음
+            console.log('시작되지 않음')
+        } else if (event.data == 0) {// 종료됨
+          
+        }
+        return;
+      }
+      // youtube url pattern
+      // https://youtu.be/waBVMaX_-eg
+      // https://www.youtube.com/watch?v=waBVMaX_-eg
+
+      function onVideoSubmit() {
+        console.log("video info 전송");
+        return;
+      }
+// --------------- 동영상 구간 끝 ------------------------------//
       var input = document.getElementById('upload_image');
       var preview = document.getElementById('preview');
       var card = document.createElement('div');
