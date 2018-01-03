@@ -13,7 +13,7 @@
   {% include 'header.html'%}
     <div class="container">
 
-    <div class="card" style="margin-top: 30px">
+    <div class="card">
       <div class="card-header">
         Profile
       </div>
@@ -27,15 +27,14 @@
             {% if loop.index  % 3 == 1 %}
                 <div class="card-group">
             {% endif %}
-                <div class="card">
-                    <img class="card-img-top" src="{{ zzal.url }}" alt="Card image cap">
+                <div class="card" style="max-width: 33%">
+                    <img class="card-img-top" src="{{ zzal.url }}" alt="Card image cap" >
                     <div>
                         <a href="#" class="badge badge-secondary" style="margin-left: 5px">#{{ zzal.tag }}</a>
                     </div>
                     <div class="card-body">
                       <h4 class="card-title">{{ zzal.title }}</h4>
                       <p class="card-text">{{ zzal.desc }}</p>
-                        <p class="card-text"> ref count : {{ zzal.ref_count }}</p>
                         <a href="#" class="btn btn-primary">Edit</a>
                     </div>
                     <div class="card-footer">

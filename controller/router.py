@@ -54,7 +54,7 @@ def my_page():
     zzal_list = list()
     for zzal_byte in zzal_list_byte:
         zzal = bytemap_to_stringmap(zzal_byte)
-        total_count += int(zzal["ref_count"])
+        # total_count += int(zzal["ref_count"])
         zzal_list.append(zzal)
 
     return render_template("mypage.html", zzal_list=zzal_list, total_count=total_count, temp=temp)
@@ -152,7 +152,7 @@ def zzal_make_video_post():
     gif_title = request.form.get('gif_title')
     gif_tag = request.form.get('gif_tag')
     path = request.form.get('video_path')
-    start_min = requset.form.get('start_min')
+    start_min = request.form.get('start_min')
     start_sec = request.fomr.get('start_sec')
     end_min = request.form.get('end_min')
     end_sec = request.form.get('end_sec')
@@ -161,7 +161,7 @@ def zzal_make_video_post():
 
 def zzal_make_video_reg():
     yurl = request.form.get('youtube')
-    reponse = {length:'4.20'}
+    response = {"length":'4.20'}
     return response
     
 def page_not_found():

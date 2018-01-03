@@ -12,6 +12,41 @@
 
     <style>
       li { list-style-type : none }
+      .slidecontainer {
+        width: 100%;
+      }
+            
+      .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 25px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+      }
+            
+      .slider:hover {
+        opacity: 1;
+      }
+            
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        background: #4CAF50;
+        cursor: pointer;
+      }
+            
+      .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        background: #4CAF50;
+        cursor: pointer;
+      }
+
     </style>
   </head>
   <body>
@@ -24,8 +59,8 @@
               <input type="text" class="form-control" id="gif_title" placeholder="title"></input>
               <p>Tag</p>
               <input type="text" class="form-control" id="gif_tag" placeholder="tag"></input>
-              <p>Duration</p>
-              <input type="text" class="form-control" id="duration" placeholder="duration"></input>
+              <p>Duration: <span id="du_val"></span></p>
+              <input type="range" class="slider" id="du_slider" min="0" max="10" value="0.5" step="0.1"></input>
             <p></p>
             <ul class="nav nav-tabs card-header-tabs">
               <li class="nav-item" >
@@ -77,6 +112,13 @@
     <script>
       var page = document.getElementById("header-create");
       HeaderTapActive(page);
+
+      var du_slider = document.getElementById("du_slider");
+      var du_output = document.getElementById("du_val");
+      du_val.innerHTML = du_slider.value;
+      du_slider.oninput = function() {
+        du_output.innerHTML = this.value;
+      }
 
       var url_list = []
       var file_list = []
@@ -149,7 +191,8 @@
       function onClickFileSubmit() {
         var title = document.getElementById("gif_title").value;
         var tag = document.getElementById("gif_tag").value;
-        var duration = document.getElementById("duration").value;
+        var duration = du_output.innerHTML;
+        
         var seq_list = [];
         if (title == "") {
           alert("Please check title");
@@ -173,12 +216,12 @@
         xhr.onload = function () {
           if (xhr.status === 200) {
             // File(s) uploaded.
-            console.log(xhr)
             preview.innerHTML = ""
             var image = document.createElement('img');
             image.className = "card-img-top";
             image.src = xhr.response;
             image.alt = "Card image cap";
+            image.style = "max-width: 33%";
             preview.appendChild(image);
             alert('ok');
           } else {
@@ -187,7 +230,6 @@
         };
 
         xhr.send(form_data);
-        showLoading();
       }
 
       function onClickImageButton() {
@@ -201,10 +243,9 @@
       }
 
       function onClickImageListSubmit() {
-        showLoading();
         var title = document.getElementById("gif_title").value;
         var tag = document.getElementById("gif_tag").value;
-        var duration = document.getElementById("duration").value;
+        var duration = du_output.innerHTML;
         if (title == "") {
           alert("Please check title");
           return;
