@@ -3,12 +3,14 @@ import urllib.request as ur
 import io
 from PIL import Image
 import numpy
-from util.get_root_path import get_root_path
+#from util.get_root_path import get_root_path
+from pytube import YouTube
 
 class ConvGIF:
     def __init__(self):
         self.result = 0
         self.images = []
+        self.vod_id = ""
 
     def Convert(self,gifname, duration):
         imageio.mimsave(get_root_path()+'/static/upload_image/'+gifname+'.gif',self.images,format='GIF',duration=duration)
@@ -24,8 +26,11 @@ class ConvGIF:
         img = numpy.asarray(Image.open(f).resize((250,250)))
         self.images.append(img)
 
-    def SetURLVideo(self,url):
+    def DownloadVideo(self,url):
+        YouTube(url).streams.first().download('/static/tmp/')
+
+    def DownloadAudio(self,url):
         pass
 
-    def ConvertVideo(self):
+    def ConvertVideo(self,id):
         pass

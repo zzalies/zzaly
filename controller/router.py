@@ -152,11 +152,8 @@ def zzal_make_video_post():
     gif_title = request.form.get('gif_title')
     gif_tag = request.form.get('gif_tag')
     path = request.form.get('video_path')
-    start_min = request.form.get('start_min')
-    start_sec = request.fomr.get('start_sec')
-    end_min = request.form.get('end_min')
-    end_sec = request.form.get('end_sec')
-
+    gif = convert_gif.ConvGIF()
+    gif.DownloadVideo(path)
     return 'ok'
 
 def zzal_make_video_reg():
