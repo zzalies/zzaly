@@ -27,7 +27,7 @@ class ConvGIF:
         self.images.append(img)
 
     def DownloadVideo(self,url):
-        YouTube(url).streams.first().download('/static/tmp/')
+        YouTube(url).get('mp4','720p').download('/static/tmp/')
 
     def DownloadAudio(self,url):
         pass
